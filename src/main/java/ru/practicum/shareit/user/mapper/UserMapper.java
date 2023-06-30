@@ -1,4 +1,4 @@
-package ru.practicum.shareit.user.controller;
+package ru.practicum.shareit.user.mapper;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;

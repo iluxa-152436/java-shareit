@@ -44,8 +44,8 @@ public class InMemoryItemStorageImpl implements ItemStorage {
     @Override
     public List<Item> findAvailableByNameOrDescription(String text) {
         return items.values().stream().filter(Item::getAvailable)
-                .filter(item ->StringUtils.containsIgnoreCase(item.getDescription(), text)
-                        || StringUtils.containsIgnoreCase(item.getName(), text)).
-                collect(Collectors.toList());
+                .filter(item -> StringUtils.containsIgnoreCase(item.getDescription(), text)
+                        || StringUtils.containsIgnoreCase(item.getName(), text))
+                .collect(Collectors.toList());
     }
 }
