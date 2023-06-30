@@ -2,6 +2,8 @@ package ru.practicum.shareit.item.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.practicum.shareit.item.mapper.ItemMapper;
+import ru.practicum.shareit.item.dto.PatchItemDto;
 import ru.practicum.shareit.item.exception.ItemAccessException;
 import ru.practicum.shareit.item.exception.UserDoesNotExistException;
 import ru.practicum.shareit.item.model.Item;
@@ -15,6 +17,7 @@ import java.util.List;
 public class ItemServiceImpl implements ItemService {
     private final ItemStorage storage;
     private final UserService userService;
+    private final ItemMapper mapper;
 
     @Override
     public Item addNewItem(Item item) {
@@ -23,7 +26,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Item updateItem(Item newItem, long ownerId) {
+    public Item updateItem(long ownerId, long itemId, PatchItemDto patchItemDto) {
+        Item newItem = mapper.toEntity(patchItemDto, getItemById(itemId));
         checkItemOwner(newItem, ownerId);
         checkUserId(newItem);
         return storage.update(newItem);

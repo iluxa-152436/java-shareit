@@ -34,10 +34,8 @@ public class UserController {
     }
 
     @PatchMapping("/{userId}")
-    public User get(@PathVariable long userId, @RequestBody @Valid UserPatchDto userPatchDto) {
-        User oldUser = userService.getUserById(userId);
-        User newUser = mapper.toEntity(userPatchDto, oldUser);
-        return userService.updateUser(newUser);
+    public User patch(@PathVariable long userId, @RequestBody @Valid UserPatchDto userPatchDto) {
+        return userService.updateUser(userId, userPatchDto);
     }
 
     @DeleteMapping("/{userId}")

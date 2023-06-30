@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.PatchItemDto;
+import ru.practicum.shareit.item.mapper.ItemMapper;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.ItemService;
 
@@ -41,9 +42,7 @@ public class ItemController {
     public Item patch(@RequestHeader(USER_ID_HEADER) long userId,
                       @RequestBody PatchItemDto patchItemDto,
                       @PathVariable long itemId) {
-        Item oldItem = itemService.getItemById(itemId);
-        Item newItem = mapper.toEntity(patchItemDto, oldItem);
-        return itemService.updateItem(newItem, userId);
+        return itemService.updateItem(userId, itemId, patchItemDto);
     }
 
     @GetMapping("/search")

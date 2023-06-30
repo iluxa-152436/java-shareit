@@ -2,6 +2,8 @@ package ru.practicum.shareit.user.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.practicum.shareit.user.controller.UserMapper;
+import ru.practicum.shareit.user.dto.UserPatchDto;
 import ru.practicum.shareit.user.storage.UserStorage;
 import ru.practicum.shareit.user.model.User;
 
@@ -11,6 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserStorage storage;
+    private final UserMapper mapper;
 
     @Override
     public User addNewUser(User user) {
@@ -33,8 +36,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(User user) {
-        return storage.update(user);
+    public User updateUser(long userId, UserPatchDto userPatchDto) {
+        User newUser= mapper.toEntity(userPatchDto, getUserById(userId));
+        return storage.update(newUser);
     }
 
     @Override
