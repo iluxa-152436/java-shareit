@@ -16,7 +16,7 @@ public class Item {
     @NotBlank
     private String description;
     @NotBlank
-    private boolean available;
+    private Boolean available;
     @NotBlank
     private long ownerId;
 
@@ -24,7 +24,7 @@ public class Item {
         this(item.getId(),
                 item.getName(),
                 item.getDescription(),
-                item.isAvailable(),
+                item.getAvailable(),
                 item.getOwnerId());
     }
 }

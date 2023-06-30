@@ -29,18 +29,6 @@ public class ItemServiceImpl implements ItemService {
         return storage.update(newItem);
     }
 
-    private static void checkItemOwner(Item newItem, long ownerId) {
-        if (newItem.getOwnerId() != ownerId) {
-            throw new ItemAccessException("Item access error");
-        }
-    }
-
-    private void checkUserId(Item newItem) {
-        if (!userService.isValid(newItem.getOwnerId())) {
-            throw new UserDoesNotExistException("User with id " + newItem.getOwnerId() + " doesn't exist");
-        }
-    }
-
     @Override
     public Item getItemById(long itemId) {
         return storage.findById(itemId);
@@ -54,5 +42,17 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<Item> getAvailableItemsByFilter(String text) {
         return storage.findAvailableByNameOrDescription(text);
+    }
+
+    private static void checkItemOwner(Item newItem, long ownerId) {
+        if (newItem.getOwnerId() != ownerId) {
+            throw new ItemAccessException("Item access error");
+        }
+    }
+
+    private void checkUserId(Item newItem) {
+        if (!userService.isValid(newItem.getOwnerId())) {
+            throw new UserDoesNotExistException("User with id " + newItem.getOwnerId() + " doesn't exist");
+        }
     }
 }

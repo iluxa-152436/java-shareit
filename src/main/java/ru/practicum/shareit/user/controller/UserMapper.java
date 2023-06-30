@@ -7,6 +7,8 @@ import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.dto.UserPatchDto;
 import ru.practicum.shareit.user.model.User;
 
+import java.util.Optional;
+
 @Component
 @RequiredArgsConstructor
 public class UserMapper {
@@ -18,12 +20,8 @@ public class UserMapper {
 
     public User toEntity(UserPatchDto userPatchDto, User user) {
         User newUser = new User(user);
-        if (userPatchDto.getName() != null) {
-            newUser.setName(userPatchDto.getName());
-        }
-        if (userPatchDto.getEmail() != null) {
-            newUser.setEmail(userPatchDto.getEmail());
-        }
+        Optional.ofNullable(userPatchDto.getName()).ifPresent(newUser::setName);
+        Optional.ofNullable(userPatchDto.getEmail()).ifPresent(newUser::setEmail);
         return newUser;
     }
 }

@@ -5,15 +5,16 @@ import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.user.exception.ConflictException;
 import ru.practicum.shareit.user.model.User;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Repository
 @RequiredArgsConstructor
 public class InMemoryUserStorageImpl implements UserStorage {
-    private final Map<Long, User> users;
-    private final Map<String, Long> emails;
-    private long id;
+    private final Map<Long, User> users = new HashMap<>();
+    private final Map<String, Long> emails = new HashMap<>();
+    private long id = 0;
 
     @Override
     public User save(User user) {

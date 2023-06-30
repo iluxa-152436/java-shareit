@@ -7,6 +7,8 @@ import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.PatchItemDto;
 import ru.practicum.shareit.item.model.Item;
 
+import java.util.Optional;
+
 @Component
 @RequiredArgsConstructor
 public class ItemMapper {
@@ -20,15 +22,9 @@ public class ItemMapper {
 
     public Item toEntity(PatchItemDto patchItemDto, Item oldItem) {
         Item item = new Item(oldItem);
-        if (patchItemDto.getAvailable() != null) {
-            item.setAvailable(patchItemDto.getAvailable());
-        }
-        if (patchItemDto.getDescription() != null) {
-            item.setDescription(patchItemDto.getDescription());
-        }
-        if (patchItemDto.getName() != null) {
-            item.setName(patchItemDto.getName());
-        }
+        Optional.ofNullable(patchItemDto.getAvailable()).ifPresent(item::setAvailable);
+        Optional.ofNullable(patchItemDto.getDescription()).ifPresent(item::setDescription);
+        Optional.ofNullable(patchItemDto.getName()).ifPresent(item::setName);
         return item;
     }
 }

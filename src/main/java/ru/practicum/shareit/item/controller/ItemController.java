@@ -1,6 +1,7 @@
 package ru.practicum.shareit.item.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.PatchItemDto;
@@ -17,26 +18,27 @@ import java.util.List;
 public class ItemController {
     private final ItemService itemService;
     private final ItemMapper mapper;
+    private final String USER_ID_HEADER = "X-Sharer-User-Id";
 
 
     @PostMapping
-    public Item add(@RequestBody @Valid ItemDto itemDto, @RequestHeader("X-Sharer-User-Id") long userId) {
+    public Item add(@RequestBody @Valid ItemDto itemDto, @RequestHeader(USER_ID_HEADER) long userId) {
         Item item = mapper.toEntity(itemDto, userId);
         return itemService.addNewItem(item);
     }
 
     @GetMapping
-    public List<Item> getByOwnerId(@RequestHeader("X-Sharer-User-Id") long userId) {
+    public List<Item> getByOwnerId(@RequestHeader(USER_ID_HEADER) long userId) {
         return itemService.getItemsByOwnerId(userId);
     }
 
     @GetMapping("/{itemId}")
-    public Item getById(@RequestHeader("X-Sharer-User-Id") long userId, @PathVariable long itemId) {
+    public Item getById(@RequestHeader(USER_ID_HEADER) long userId, @PathVariable long itemId) {
         return itemService.getItemById(itemId);
     }
 
     @PatchMapping("/{itemId}")
-    public Item patch(@RequestHeader("X-Sharer-User-Id") long userId,
+    public Item patch(@RequestHeader(USER_ID_HEADER) long userId,
                       @RequestBody PatchItemDto patchItemDto,
                       @PathVariable long itemId) {
         Item oldItem = itemService.getItemById(itemId);
@@ -46,7 +48,7 @@ public class ItemController {
 
     @GetMapping("/search")
     public List<Item> search(@RequestParam("text") String text) {
-        if (text.isEmpty()) {
+        if (StringUtils.isBlank(text)) {
             return Collections.EMPTY_LIST;
         }
         return itemService.getAvailableItemsByFilter(text);
