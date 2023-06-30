@@ -19,27 +19,27 @@ import java.util.List;
 public class ItemController {
     private final ItemService itemService;
     private final ItemMapper mapper;
-    private final String USER_ID_HEADER = "X-Sharer-User-Id";
+    private final String USERID_HEADER = "X-Sharer-User-Id";
 
 
     @PostMapping
-    public Item add(@RequestBody @Valid ItemDto itemDto, @RequestHeader(USER_ID_HEADER) long userId) {
+    public Item add(@RequestBody @Valid ItemDto itemDto, @RequestHeader(USERID_HEADER) long userId) {
         Item item = mapper.toEntity(itemDto, userId);
         return itemService.addNewItem(item);
     }
 
     @GetMapping
-    public List<Item> getByOwnerId(@RequestHeader(USER_ID_HEADER) long userId) {
+    public List<Item> getByOwnerId(@RequestHeader(USERID_HEADER) long userId) {
         return itemService.getItemsByOwnerId(userId);
     }
 
     @GetMapping("/{itemId}")
-    public Item getById(@RequestHeader(USER_ID_HEADER) long userId, @PathVariable long itemId) {
+    public Item getById(@RequestHeader(USERID_HEADER) long userId, @PathVariable long itemId) {
         return itemService.getItemById(itemId);
     }
 
     @PatchMapping("/{itemId}")
-    public Item patch(@RequestHeader(USER_ID_HEADER) long userId,
+    public Item patch(@RequestHeader(USERID_HEADER) long userId,
                       @RequestBody PatchItemDto patchItemDto,
                       @PathVariable long itemId) {
         return itemService.updateItem(userId, itemId, patchItemDto);
