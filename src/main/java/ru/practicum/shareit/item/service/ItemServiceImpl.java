@@ -2,12 +2,15 @@ package ru.practicum.shareit.item.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.ItemGetDto;
+import ru.practicum.shareit.item.exception.ItemNotFoundException;
 import ru.practicum.shareit.item.mapper.ItemMapper;
-import ru.practicum.shareit.item.dto.PatchItemDto;
+import ru.practicum.shareit.item.dto.ItemPatchDto;
 import ru.practicum.shareit.item.exception.ItemAccessException;
-import ru.practicum.shareit.item.exception.UserDoesNotExistException;
+import ru.practicum.shareit.item.storage.DbItemStorage;
+import ru.practicum.shareit.user.exception.UserDoesNotExistException;
 import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.item.storage.ItemStorage;
 import ru.practicum.shareit.user.service.UserService;
 
 import java.util.List;
@@ -15,48 +18,49 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
-    private final ItemStorage storage;
+    private final DbItemStorage storage;
     private final UserService userService;
     private final ItemMapper mapper;
 
     @Override
-    public Item addNewItem(Item item) {
-        checkUserId(item);
-        return storage.save(item);
+    public ItemGetDto addNewItem(ItemDto itemDto, long userId) {
+        userService.isValid(userId);
+        return mapper.toItemGetDto(storage.save(mapper.toEntity(itemDto, userService.getUserById(userId))));
     }
 
     @Override
-    public Item updateItem(long ownerId, long itemId, PatchItemDto patchItemDto) {
-        Item newItem = mapper.toEntity(patchItemDto, getItemById(itemId));
+    public ItemGetDto updateItem(long ownerId, long itemId, ItemPatchDto itemPatchDto) {
+        Item newItem = mapper.toEntity(itemPatchDto, storage.findById(itemId).orElseThrow());
         checkItemOwner(newItem, ownerId);
         checkUserId(newItem);
-        return storage.update(newItem);
+        return mapper.toItemGetDto(storage.save(newItem));
     }
 
     @Override
-    public Item getItemById(long itemId) {
-        return storage.findById(itemId);
+    public ItemGetDto getItemById(long itemId) {
+        return mapper.toItemGetDto(storage.findById(itemId)
+                .orElseThrow(()-> new ItemNotFoundException("Item with id " + itemId + " doesn't exist")));
     }
 
     @Override
-    public List<Item> getItemsByOwnerId(long ownerId) {
-        return storage.findByOwnerId(ownerId);
+    public List<ItemGetDto> getItemsByOwnerId(long ownerId) {
+        return mapper.toItemGetDto(storage.findByOwnerId(ownerId));
     }
 
     @Override
-    public List<Item> getAvailableItemsByFilter(String text) {
-        return storage.findAvailableByNameOrDescription(text);
+    public List<ItemGetDto> getAvailableItemsByFilter(String text) {
+        return mapper.toItemGetDto(storage.findAvailableByNameOrDescription(text));
     }
 
     private static void checkItemOwner(Item newItem, long ownerId) {
-        if (newItem.getOwnerId() != ownerId) {
+        if (newItem.getUser().getId()!= ownerId) {
             throw new ItemAccessException("Item access error");
         }
     }
 
     private void checkUserId(Item newItem) {
-        if (!userService.isValid(newItem.getOwnerId())) {
-            throw new UserDoesNotExistException("User with id " + newItem.getOwnerId() + " doesn't exist");
+        if (!userService.isValid(newItem.getUser().getId())) {
+            throw new UserDoesNotExistException("User with id " + newItem.getUser().getId()+ " doesn't exist");
         }
     }
 }
