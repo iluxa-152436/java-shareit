@@ -18,11 +18,10 @@ import java.util.List;
 @RequestMapping(path = "/users")
 public class UserController {
     private final UserService userService;
-    private final UserMapper mapper;
 
     @PostMapping
     public User add(@RequestBody @Valid UserDto userDto) {
-        User user = mapper.toEntity(userDto);
+        User user = UserMapper.toEntity(userDto);
         return userService.addNewUser(user);
     }
 

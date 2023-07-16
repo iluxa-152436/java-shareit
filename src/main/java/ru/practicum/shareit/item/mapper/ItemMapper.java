@@ -1,11 +1,11 @@
 package ru.practicum.shareit.item.mapper;
 
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemGetDto;
 import ru.practicum.shareit.item.dto.ItemPatchDto;
+import ru.practicum.shareit.item.dto.ItemShortDto;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.model.User;
 
@@ -16,15 +16,16 @@ import java.util.Optional;
 @Component
 @RequiredArgsConstructor
 public class ItemMapper {
-    private final ModelMapper modelMapper;
-
-    public Item toEntity(ItemDto itemDto, User user) {
-        Item item = modelMapper.map(itemDto, Item.class);
+    public static Item toEntity(ItemDto itemDto, User user) {
+        Item item = new Item();
+        item.setName(itemDto.getName());
+        item.setDescription(itemDto.getDescription());
+        item.setAvailable(itemDto.getAvailable());
         item.setUser(user);
         return item;
     }
 
-    public Item toEntity(ItemPatchDto itemPatchDto, Item oldItem) {
+    public static Item toEntity(ItemPatchDto itemPatchDto, Item oldItem) {
         Item item = new Item(oldItem);
         Optional.ofNullable(itemPatchDto.getAvailable()).ifPresent(item::setAvailable);
         Optional.ofNullable(itemPatchDto.getDescription()).ifPresent(item::setDescription);
@@ -32,7 +33,7 @@ public class ItemMapper {
         return item;
     }
 
-    public ItemGetDto toItemGetDto(Item item) {
+    public static ItemGetDto toItemGetDto(Item item) {
         ItemGetDto itemGetDto = new ItemGetDto();
         itemGetDto.setId(item.getId());
         itemGetDto.setName(item.getName());
@@ -42,11 +43,15 @@ public class ItemMapper {
         return itemGetDto;
     }
 
-    public List<ItemGetDto> toItemGetDto(List<Item> items) {
+    public static List<ItemGetDto> toItemGetDto(List<Item> items) {
         List<ItemGetDto> itemGetDtoList = new ArrayList<>();
         for (Item item : items) {
             itemGetDtoList.add(toItemGetDto(item));
         }
         return itemGetDtoList;
+    }
+
+    public static ItemShortDto toItemShortDto(Item item) {
+        return new ItemShortDto(item.getId(), item.getName());
     }
 }

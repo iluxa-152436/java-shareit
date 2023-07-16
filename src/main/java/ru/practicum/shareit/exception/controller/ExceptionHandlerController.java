@@ -8,7 +8,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.practicum.shareit.exception.ApiErrorMessage;
-import ru.practicum.shareit.item.exception.ItemAccessException;
+import ru.practicum.shareit.exception.AccessException;
 import ru.practicum.shareit.item.exception.ItemNotFoundException;
 import ru.practicum.shareit.user.exception.UserDoesNotExistException;
 import ru.practicum.shareit.user.exception.ConflictException;
@@ -42,7 +42,7 @@ public class ExceptionHandlerController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiErrorMessage(exception.getMessage()));
     }
 
-    @ExceptionHandler(value = {ItemAccessException.class})
+    @ExceptionHandler(value = {AccessException.class})
     public ResponseEntity<ApiErrorMessage> handleItemAccessException(Exception exception) {
         log.debug("Получен код 403 Forbidden [{}]", exception.getMessage(), exception);
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ApiErrorMessage(exception.getMessage()));
