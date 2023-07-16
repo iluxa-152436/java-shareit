@@ -27,7 +27,7 @@ public class Booking {
     @ManyToOne
     @JoinColumn(name = "user_id")
     @ToString.Exclude
-    private User creator;
+    private User booker;
     @NotNull
     @Column(name = "state", nullable = false)
     private BookingState state;

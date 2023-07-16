@@ -11,6 +11,7 @@ import javax.validation.Valid;
 
 import java.util.List;
 
+import static ru.practicum.shareit.constant.Constant.DEFAULT_STATE_FILTER;
 import static ru.practicum.shareit.constant.Constant.HEADER_USER_ID;
 
 @RestController
@@ -20,7 +21,8 @@ public class BookingController {
     private final BookingService bookingService;
 
     @PostMapping
-    public BookingGetDto add(@RequestBody @Valid BookingDto bookingDto, @RequestHeader(HEADER_USER_ID) long creatorId) {
+    public BookingGetDto add(@RequestBody @Valid BookingDto bookingDto,
+                             @RequestHeader(HEADER_USER_ID) long creatorId) {
         return bookingService.addNewBooking(bookingDto, creatorId);
     }
 
@@ -31,13 +33,20 @@ public class BookingController {
 
     @GetMapping("/owner")
     public List<BookingGetDto> getBookingsByItemOwnerId(@RequestHeader(HEADER_USER_ID) long ownerId,
-                                                     @RequestParam(defaultValue = "all") BookingStateFilter state) {
+                                                        @RequestParam(defaultValue = DEFAULT_STATE_FILTER) BookingStateFilter state) {
         return bookingService.getBookingsByItemOwnerId(ownerId, state);
     }
 
     @GetMapping
-    public List<BookingGetDto> getBookingsByCreatorId(@RequestHeader(HEADER_USER_ID) long creatorId,
-                                                   @RequestParam(defaultValue = "all") BookingStateFilter state) {
-        return bookingService.getBookingsByCreatorId(creatorId, state);
+    public List<BookingGetDto> getBookingsByBookerId(@RequestHeader(HEADER_USER_ID) long creatorId,
+                                                     @RequestParam(defaultValue = DEFAULT_STATE_FILTER) BookingStateFilter state) {
+        return bookingService.getBookingsByBookerId(creatorId, state);
+    }
+
+    @PatchMapping("/{bookingId}")
+    public BookingGetDto patchBookingByItemOwner(@RequestHeader(HEADER_USER_ID) long ownerId,
+                                                 @PathVariable long bookingId,
+                                                 @RequestParam("approved") boolean isApproved) {
+        return bookingService.updateBookingByItemOwner(bookingId, ownerId, isApproved);
     }
 }

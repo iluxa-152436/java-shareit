@@ -42,14 +42,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(long userId, UserPatchDto userPatchDto) {
-        User newUser = mapper.toEntity(userPatchDto, getUserById(userId));
+        User newUser = UserMapper.toEntity(userPatchDto, getUserById(userId));
         log.debug("Service");
         log.debug("Получен newUser = {}", newUser);
         return storage.save(newUser);
     }
 
     @Override
-    public boolean isValid(long id) {
+    public boolean isValidUser(long id) {
         return storage.findById(id).isPresent();
     }
 }

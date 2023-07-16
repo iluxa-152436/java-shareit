@@ -10,11 +10,11 @@ public interface UserService {
 
     User updateUser(long userId, UserPatchDto userPatchDto);
 
-    User getUserById(long id);
+    User getUserById(long userId);
 
     List<User> getAllUsers();
 
-    void deleteUserById(long id);
+    void deleteUserById(long userId);
 
-    boolean isValid(long id);
+    boolean isValidUser(long userId);
 }

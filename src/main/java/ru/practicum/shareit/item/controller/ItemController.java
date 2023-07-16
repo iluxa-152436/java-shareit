@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemGetDto;
+import ru.practicum.shareit.item.dto.ItemGetDtoOwner;
 import ru.practicum.shareit.item.dto.ItemPatchDto;
 import ru.practicum.shareit.item.service.ItemService;
 
@@ -26,13 +27,13 @@ public class ItemController {
     }
 
     @GetMapping
-    public List<ItemGetDto> getByOwnerId(@RequestHeader(HEADER_USER_ID) long userId) {
+    public List<ItemGetDtoOwner> getByOwnerId(@RequestHeader(HEADER_USER_ID) long userId) {
         return itemService.getItemsByOwnerId(userId);
     }
 
     @GetMapping("/{itemId}")
-    public ItemGetDto getById(@RequestHeader(HEADER_USER_ID) long userId, @PathVariable long itemId) {
-        return itemService.getItemById(itemId);
+    public ItemGetDtoOwner getById(@RequestHeader(HEADER_USER_ID) long userId, @PathVariable long itemId) {
+        return itemService.getItemById(itemId, userId);
     }
 
     @PatchMapping("/{itemId}")
