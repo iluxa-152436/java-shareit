@@ -3,10 +3,7 @@ package ru.practicum.shareit.item.controller;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.dto.ItemGetDto;
-import ru.practicum.shareit.item.dto.ItemGetDtoOwner;
-import ru.practicum.shareit.item.dto.ItemPatchDto;
+import ru.practicum.shareit.item.dto.*;
 import ru.practicum.shareit.item.service.ItemService;
 
 import javax.validation.Valid;
@@ -27,12 +24,12 @@ public class ItemController {
     }
 
     @GetMapping
-    public List<ItemGetDtoOwner> getByOwnerId(@RequestHeader(HEADER_USER_ID) long userId) {
+    public List<ItemGetDtoFull> getByOwnerId(@RequestHeader(HEADER_USER_ID) long userId) {
         return itemService.getItemsByOwnerId(userId);
     }
 
     @GetMapping("/{itemId}")
-    public ItemGetDtoOwner getById(@RequestHeader(HEADER_USER_ID) long userId, @PathVariable long itemId) {
+    public ItemGetDtoFull getById(@RequestHeader(HEADER_USER_ID) long userId, @PathVariable long itemId) {
         return itemService.getItemById(itemId, userId);
     }
 
@@ -49,5 +46,12 @@ public class ItemController {
             return Collections.EMPTY_LIST;
         }
         return itemService.getAvailableItemsByFilter(text);
+    }
+
+    @PostMapping("/{itemId}/comment")
+    public CommentGetDto addComment(@RequestHeader(HEADER_USER_ID) long userId,
+                                    @RequestBody @Valid CommentPostDto commentPostDto,
+                                    @PathVariable long itemId) {
+        return itemService.addComment(commentPostDto, userId, itemId);
     }
 }

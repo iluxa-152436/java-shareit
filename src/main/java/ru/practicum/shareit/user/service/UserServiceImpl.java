@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.practicum.shareit.user.exception.UserDoesNotExistException;
 import ru.practicum.shareit.user.mapper.UserMapper;
 import ru.practicum.shareit.user.dto.UserPatchDto;
-import ru.practicum.shareit.user.storage.DbUserStorage;
+import ru.practicum.shareit.user.storage.UserStorage;
 import ru.practicum.shareit.user.model.User;
 
 import java.util.List;
@@ -15,8 +15,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    private final DbUserStorage storage;
-    private final UserMapper mapper;
+    private final UserStorage storage;
 
     @Override
     public User addNewUser(User user) {

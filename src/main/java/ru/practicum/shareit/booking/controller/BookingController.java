@@ -22,8 +22,8 @@ public class BookingController {
 
     @PostMapping
     public BookingGetDto add(@RequestBody @Valid BookingDto bookingDto,
-                             @RequestHeader(HEADER_USER_ID) long creatorId) {
-        return bookingService.addNewBooking(bookingDto, creatorId);
+                             @RequestHeader(HEADER_USER_ID) long bookerId) {
+        return bookingService.addNewBooking(bookingDto, bookerId);
     }
 
     @GetMapping("/{bookingId}")
@@ -38,9 +38,9 @@ public class BookingController {
     }
 
     @GetMapping
-    public List<BookingGetDto> getBookingsByBookerId(@RequestHeader(HEADER_USER_ID) long creatorId,
+    public List<BookingGetDto> getBookingsByBookerId(@RequestHeader(HEADER_USER_ID) long bookerId,
                                                      @RequestParam(defaultValue = DEFAULT_STATE_FILTER) BookingStateFilter state) {
-        return bookingService.getBookingsByBookerId(creatorId, state);
+        return bookingService.getBookingsByBookerId(bookerId, state);
     }
 
     @PatchMapping("/{bookingId}")

@@ -5,11 +5,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.practicum.shareit.booking.dto.BookingShortDto;
 
+import java.util.List;
+
 
 @NoArgsConstructor
 @Setter
 @Getter
-public class ItemGetDtoOwner {
+public class ItemGetDtoFull {
     private long id;
     private String name;
     private String description;
@@ -17,4 +19,5 @@ public class ItemGetDtoOwner {
     private long ownerId;
     private BookingShortDto lastBooking;
     private BookingShortDto nextBooking;
+    private List<CommentGetDto> comments;
 }

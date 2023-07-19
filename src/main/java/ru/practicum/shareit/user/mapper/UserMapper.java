@@ -1,6 +1,5 @@
 package ru.practicum.shareit.user.mapper;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.dto.UserPatchDto;
@@ -10,7 +9,6 @@ import ru.practicum.shareit.user.model.User;
 import java.util.Optional;
 
 @Component
-@RequiredArgsConstructor
 public class UserMapper {
     public static User toEntity(UserDto userDto) {
         User user = new User();

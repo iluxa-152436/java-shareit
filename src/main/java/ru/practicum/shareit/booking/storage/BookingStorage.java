@@ -66,4 +66,14 @@ public interface BookingStorage extends JpaRepository<Booking, Long> {
     List<Booking> findByOwnerIdAndStateAndStartBeforeAndEndAfterOrderByStartDesc(long ownerId, LocalDateTime dateTime);
 
     List<Booking> findByItemIn(List<Item> items);
+
+    @Query("select count (bo) " +
+            "from Booking as bo " +
+            "join bo.booker as b " +
+            "join bo.item as it " +
+            "where b.id = ?1 and it.id = ?2 and bo.state = ?3 and bo.end < ?4")
+    int findCountByBookerIdAndItemIdAndState(long userId,
+                                             long itemId,
+                                             BookingState bookingState,
+                                             LocalDateTime dateTime);
 }
