@@ -1,6 +1,5 @@
 package ru.practicum.shareit.user.mapper;
 
-import org.springframework.stereotype.Component;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.dto.UserPatchDto;
 import ru.practicum.shareit.user.dto.UserShortDto;
@@ -8,7 +7,6 @@ import ru.practicum.shareit.user.model.User;
 
 import java.util.Optional;
 
-@Component
 public class UserMapper {
     public static User toEntity(UserDto userDto) {
         User user = new User();

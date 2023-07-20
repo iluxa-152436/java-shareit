@@ -1,6 +1,5 @@
 package ru.practicum.shareit.item.mapper;
 
-import org.springframework.stereotype.Component;
 import ru.practicum.shareit.item.dto.CommentGetDto;
 import ru.practicum.shareit.item.dto.CommentPostDto;
 import ru.practicum.shareit.item.model.Comment;
@@ -11,7 +10,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
 public class CommentMapper {
     public static Comment toEntity(CommentPostDto commentPostDto, User user, Item item) {
         Comment comment = new Comment();

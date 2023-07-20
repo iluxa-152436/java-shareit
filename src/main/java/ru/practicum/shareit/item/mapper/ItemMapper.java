@@ -1,6 +1,5 @@
 package ru.practicum.shareit.item.mapper;
 
-import org.springframework.stereotype.Component;
 import ru.practicum.shareit.booking.entity.Booking;
 import ru.practicum.shareit.booking.entity.BookingState;
 import ru.practicum.shareit.booking.mapper.BookingMapper;
@@ -16,7 +15,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Component
 public class ItemMapper {
     public static Item toEntity(ItemDto itemDto, User user) {
         Item item = new Item();

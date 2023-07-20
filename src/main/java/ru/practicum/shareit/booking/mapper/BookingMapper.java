@@ -1,6 +1,5 @@
 package ru.practicum.shareit.booking.mapper;
 
-import org.springframework.stereotype.Component;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingGetDto;
 import ru.practicum.shareit.booking.dto.BookingShortDto;
@@ -14,7 +13,6 @@ import ru.practicum.shareit.user.model.User;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
 public class BookingMapper {
     public static Booking toEntity(BookingDto bookingDto, User creator, Item item) {
         Booking booking = new Booking();
