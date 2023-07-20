@@ -83,22 +83,22 @@ public class BookingServiceImpl implements BookingService {
         LocalDateTime now = LocalDateTime.now();
         switch (stateFilter) {
             case ALL:
-                return toBookingGetDto(storage.findByOwnerIdOrderByStartDesc(ownerId));
+                return toBookingGetDto(storage.findByItemUserIdOrderByStartDesc(ownerId));
             case WAITING:
                 return toBookingGetDto(storage
-                        .findByOwnerIdAndStateOrderByStartDesc(ownerId, BookingState.WAITING));
+                        .findByItemUserIdAndStateOrderByStartDesc(ownerId, BookingState.WAITING));
             case REJECTED:
                 return toBookingGetDto(storage
-                        .findByOwnerIdAndStateOrderByStartDesc(ownerId, BookingState.REJECTED));
+                        .findByItemUserIdAndStateOrderByStartDesc(ownerId, BookingState.REJECTED));
             case PAST:
                 return toBookingGetDto(storage
-                        .findByOwnerIdAndStateAndEndBeforeOrderByStartDesc(ownerId, now));
+                        .findByItemUserIdAndEndBeforeOrderByStartDesc(ownerId, now));
             case FUTURE:
                 return toBookingGetDto(storage
-                        .findByOwnerIdAndStateAndStartAfterOrderByStartDesc(ownerId, now));
+                        .findByItemUserIdAndStartAfterOrderByStartDesc(ownerId, now));
             case CURRENT:
                 return toBookingGetDto(storage
-                        .findByOwnerIdAndStateAndStartBeforeAndEndAfterOrderByStartDesc(ownerId, now));
+                        .findByItemUserIdAndStartBeforeAndEndAfterOrderByStartDesc(ownerId, now, now));
             default:
                 return null;
         }

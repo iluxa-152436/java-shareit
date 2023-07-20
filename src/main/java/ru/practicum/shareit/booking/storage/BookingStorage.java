@@ -25,45 +25,17 @@ public interface BookingStorage extends JpaRepository<Booking, Long> {
                                                                           LocalDateTime dateTime1,
                                                                           LocalDateTime dateTime2);
 
-    @Query("select bo " +
-            "from Booking as bo " +
-            "join bo.item as it " +
-            "join it.user as u " +
-            "where u.id = ?1 " +
-            "order by bo.start desc")
-    List<Booking> findByOwnerIdOrderByStartDesc(long ownerId);
+    List<Booking> findByItemUserIdOrderByStartDesc(long ownerId);
 
-    @Query("select bo " +
-            "from Booking as bo " +
-            "join bo.item as it " +
-            "join it.user as u " +
-            "where u.id = ?1 and bo.state = ?2 " +
-            "order by bo.start desc")
-    List<Booking> findByOwnerIdAndStateOrderByStartDesc(long ownerId, BookingState state);
+    List<Booking> findByItemUserIdAndStateOrderByStartDesc(long ownerId, BookingState state);
 
-    @Query("select bo " +
-            "from Booking as bo " +
-            "join bo.item as it " +
-            "join it.user as u " +
-            "where u.id = ?1 and bo.start > ?2 " +
-            "order by bo.start desc")
-    List<Booking> findByOwnerIdAndStateAndStartAfterOrderByStartDesc(long ownerId, LocalDateTime dateTime);
+    List<Booking> findByItemUserIdAndStartAfterOrderByStartDesc(long ownerId, LocalDateTime dateTime);
 
-    @Query("select bo " +
-            "from Booking as bo " +
-            "join bo.item as it " +
-            "join it.user as u " +
-            "where u.id = ?1 and bo.end < ?2 " +
-            "order by bo.start desc")
-    List<Booking> findByOwnerIdAndStateAndEndBeforeOrderByStartDesc(long ownerId, LocalDateTime dateTime);
+    List<Booking> findByItemUserIdAndEndBeforeOrderByStartDesc(long ownerId, LocalDateTime dateTime);
 
-    @Query("select bo " +
-            "from Booking as bo " +
-            "join bo.item as it " +
-            "join it.user as u " +
-            "where u.id = ?1 and bo.start < ?2 and bo.end > ?2 " +
-            "order by bo.start desc")
-    List<Booking> findByOwnerIdAndStateAndStartBeforeAndEndAfterOrderByStartDesc(long ownerId, LocalDateTime dateTime);
+    List<Booking> findByItemUserIdAndStartBeforeAndEndAfterOrderByStartDesc(long ownerId,
+                                                                            LocalDateTime dateTime1,
+                                                                            LocalDateTime dateTime2);
 
     List<Booking> findByItemIn(List<Item> items);
 
