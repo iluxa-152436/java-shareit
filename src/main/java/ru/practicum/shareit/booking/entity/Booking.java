@@ -3,8 +3,8 @@ package ru.practicum.shareit.booking.entity;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.user.model.User;
+import ru.practicum.shareit.item.entity.Item;
+import ru.practicum.shareit.user.entity.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -25,7 +25,7 @@ public class Booking {
     @JoinColumn(name = "user_id")
     @ToString.Exclude
     private User booker;
-    @Column(name = "state", nullable = false)
+    @Column(name = "state", nullable = false, length = 10)
     private BookingState state;
     @Column(name = "start_date", nullable = false)
     private LocalDateTime start;

@@ -4,9 +4,9 @@ import ru.practicum.shareit.booking.entity.Booking;
 import ru.practicum.shareit.booking.entity.BookingState;
 import ru.practicum.shareit.booking.mapper.BookingMapper;
 import ru.practicum.shareit.item.dto.*;
-import ru.practicum.shareit.item.model.Comment;
-import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.user.model.User;
+import ru.practicum.shareit.item.entity.Comment;
+import ru.practicum.shareit.item.entity.Item;
+import ru.practicum.shareit.user.entity.User;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

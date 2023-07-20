@@ -10,12 +10,12 @@ import ru.practicum.shareit.item.exception.ItemNotFoundException;
 import ru.practicum.shareit.item.mapper.CommentMapper;
 import ru.practicum.shareit.item.mapper.ItemMapper;
 import ru.practicum.shareit.exception.AccessException;
-import ru.practicum.shareit.item.model.Comment;
+import ru.practicum.shareit.item.entity.Comment;
 import ru.practicum.shareit.item.storage.CommentStorage;
 import ru.practicum.shareit.item.storage.ItemStorage;
 import ru.practicum.shareit.user.exception.UserDoesNotExistException;
-import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.user.model.User;
+import ru.practicum.shareit.item.entity.Item;
+import ru.practicum.shareit.user.entity.User;
 import ru.practicum.shareit.user.service.UserService;
 
 import java.time.LocalDateTime;

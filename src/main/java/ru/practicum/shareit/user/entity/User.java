@@ -1,4 +1,4 @@
-package ru.practicum.shareit.user.model;
+package ru.practicum.shareit.user.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,9 +17,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Exclude
     private long id;
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, length = 40)
     private String name;
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(name = "email", nullable = false, unique = true, length = 40)
     private String email;
 
     public User(User user) {

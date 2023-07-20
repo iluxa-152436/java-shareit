@@ -7,7 +7,7 @@ import ru.practicum.shareit.user.exception.UserDoesNotExistException;
 import ru.practicum.shareit.user.mapper.UserMapper;
 import ru.practicum.shareit.user.dto.UserPatchDto;
 import ru.practicum.shareit.user.storage.UserStorage;
-import ru.practicum.shareit.user.model.User;
+import ru.practicum.shareit.user.entity.User;
 
 import java.util.List;
 

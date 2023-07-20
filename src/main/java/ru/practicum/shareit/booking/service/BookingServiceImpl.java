@@ -9,7 +9,7 @@ import ru.practicum.shareit.booking.entity.BookingState;
 import ru.practicum.shareit.booking.exception.BookingNotFoundException;
 import ru.practicum.shareit.booking.storage.BookingStorage;
 import ru.practicum.shareit.item.exception.ItemNotFoundException;
-import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.item.entity.Item;
 import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.user.exception.UserDoesNotExistException;
 import ru.practicum.shareit.user.service.UserService;

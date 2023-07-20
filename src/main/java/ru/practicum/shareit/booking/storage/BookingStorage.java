@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import ru.practicum.shareit.booking.entity.Booking;
 import ru.practicum.shareit.booking.entity.BookingState;
-import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.item.entity.Item;
 
 import java.time.LocalDateTime;
 import java.util.List;
