@@ -111,7 +111,7 @@ public class BookingServiceImpl implements BookingService {
             throw new BookingNotFoundException("Booking with id " + bookingId + " doesn't exist");
         }
         if (isApproved) {
-            if (booking.getState().equals(BookingState.WAITING)) {
+            if (booking.getState() == BookingState.WAITING) {
                 booking.setState(BookingState.APPROVED);
             } else {
                 throw new IllegalArgumentException();
