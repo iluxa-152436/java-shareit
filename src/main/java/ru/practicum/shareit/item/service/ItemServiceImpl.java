@@ -2,6 +2,7 @@ package ru.practicum.shareit.item.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.entity.Booking;
 import ru.practicum.shareit.booking.entity.BookingState;
 import ru.practicum.shareit.booking.storage.BookingStorage;
@@ -31,6 +32,7 @@ public class ItemServiceImpl implements ItemService {
     private final CommentStorage commentStorage;
     private final UserService userService;
 
+    @Transactional
     @Override
     public ItemGetDto addNewItem(ItemDto itemDto, long userId) {
         userService.isValidUser(userId);
@@ -43,6 +45,7 @@ public class ItemServiceImpl implements ItemService {
                 .orElseThrow(() -> new ItemNotFoundException("Item with id " + itemId + " doesn't exist"));
     }
 
+    @Transactional
     @Override
     public ItemGetDto updateItem(long ownerId, long itemId, ItemPatchDto itemPatchDto) {
         Item newItem = ItemMapper.toEntity(itemPatchDto, itemStorage.findById(itemId).orElseThrow());
@@ -84,6 +87,7 @@ public class ItemServiceImpl implements ItemService {
         return ItemMapper.toItemGetDto(itemStorage.findAvailableByNameOrDescription(text));
     }
 
+    @Transactional
     @Override
     public CommentGetDto addComment(CommentPostDto commentPostDto, long userId, long itemId) {
         User user = userService.getUserById(userId);

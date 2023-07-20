@@ -3,6 +3,7 @@ package ru.practicum.shareit.user.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.user.exception.UserDoesNotExistException;
 import ru.practicum.shareit.user.mapper.UserMapper;
 import ru.practicum.shareit.user.dto.UserPatchDto;
@@ -17,6 +18,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private final UserStorage storage;
 
+    @Transactional
     @Override
     public User addNewUser(User user) {
         log.debug("Получен user = {}", user);
@@ -39,6 +41,7 @@ public class UserServiceImpl implements UserService {
         storage.deleteById(id);
     }
 
+    @Transactional
     @Override
     public User updateUser(long userId, UserPatchDto userPatchDto) {
         User newUser = UserMapper.toEntity(userPatchDto, getUserById(userId));
