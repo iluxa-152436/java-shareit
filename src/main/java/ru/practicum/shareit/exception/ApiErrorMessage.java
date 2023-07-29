@@ -8,5 +8,5 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class ApiErrorMessage {
-    private String message;
+    private String error;
 }

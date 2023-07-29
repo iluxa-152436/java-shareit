@@ -1,26 +1,25 @@
-package ru.practicum.shareit.user.model;
+package ru.practicum.shareit.user.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+import javax.persistence.*;
 
-/**
- * TODO Sprint add-controllers.
- */
 @Data
 @RequiredArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "app_users")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Exclude
     private long id;
-    @NotBlank
+    @Column(name = "name", nullable = false, length = 40)
     private String name;
-    @NotBlank
-    @Email
+    @Column(name = "email", nullable = false, unique = true, length = 40)
     private String email;
 
     public User(User user) {

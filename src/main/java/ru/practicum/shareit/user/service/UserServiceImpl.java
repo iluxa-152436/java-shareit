@@ -1,28 +1,34 @@
 package ru.practicum.shareit.user.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.shareit.user.exception.UserDoesNotExistException;
 import ru.practicum.shareit.user.mapper.UserMapper;
 import ru.practicum.shareit.user.dto.UserPatchDto;
 import ru.practicum.shareit.user.storage.UserStorage;
-import ru.practicum.shareit.user.model.User;
+import ru.practicum.shareit.user.entity.User;
 
 import java.util.List;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserStorage storage;
-    private final UserMapper mapper;
 
+    @Transactional
     @Override
     public User addNewUser(User user) {
+        log.debug("Получен user = {}", user);
         return storage.save(user);
     }
 
     @Override
     public User getUserById(long id) {
-        return storage.findById(id);
+        return storage.findById(id)
+                .orElseThrow(() -> new UserDoesNotExistException("User with id " + id + " doesn't exist"));
     }
 
     @Override
@@ -35,14 +41,17 @@ public class UserServiceImpl implements UserService {
         storage.deleteById(id);
     }
 
+    @Transactional
     @Override
     public User updateUser(long userId, UserPatchDto userPatchDto) {
-        User newUser = mapper.toEntity(userPatchDto, getUserById(userId));
-        return storage.update(newUser);
+        User newUser = UserMapper.toEntity(userPatchDto, getUserById(userId));
+        log.debug("Service");
+        log.debug("Получен newUser = {}", newUser);
+        return storage.save(newUser);
     }
 
     @Override
-    public boolean isValid(long id) {
-        return storage.findById(id) != null;
+    public boolean isValidUser(long id) {
+        return storage.findById(id).isPresent();
     }
 }

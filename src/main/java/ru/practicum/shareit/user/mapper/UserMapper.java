@@ -1,27 +1,30 @@
 package ru.practicum.shareit.user.mapper;
 
-import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Component;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.dto.UserPatchDto;
-import ru.practicum.shareit.user.model.User;
+import ru.practicum.shareit.user.dto.UserShortDto;
+import ru.practicum.shareit.user.entity.User;
 
 import java.util.Optional;
 
-@Component
-@RequiredArgsConstructor
 public class UserMapper {
-    private final ModelMapper modelMapper;
-
-    public User toEntity(UserDto userDto) {
-        return modelMapper.map(userDto, User.class);
+    public static User toEntity(UserDto userDto) {
+        User user = new User();
+        user.setName(userDto.getName());
+        user.setEmail(userDto.getEmail());
+        return user;
     }
 
-    public User toEntity(UserPatchDto userPatchDto, User user) {
+    public static User toEntity(UserPatchDto userPatchDto, User user) {
         User newUser = new User(user);
         Optional.ofNullable(userPatchDto.getName()).ifPresent(newUser::setName);
         Optional.ofNullable(userPatchDto.getEmail()).ifPresent(newUser::setEmail);
         return newUser;
+    }
+
+    public static UserShortDto toShortDto(User user) {
+        UserShortDto userShortDto = new UserShortDto();
+        userShortDto.setId(user.getId());
+        return userShortDto;
     }
 }
