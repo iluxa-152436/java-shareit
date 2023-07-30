@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.shareit.user.exception.UserDoesNotExistException;
+import ru.practicum.shareit.user.exception.UserNotFoundException;
 import ru.practicum.shareit.user.mapper.UserMapper;
 import ru.practicum.shareit.user.dto.UserPatchDto;
 import ru.practicum.shareit.user.storage.UserStorage;
@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserById(long id) {
         return storage.findById(id)
-                .orElseThrow(() -> new UserDoesNotExistException("User with id " + id + " doesn't exist"));
+                .orElseThrow(() -> new UserNotFoundException("User with id " + id + " doesn't exist"));
     }
 
     @Override
@@ -51,7 +51,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean isValidUser(long id) {
-        return storage.findById(id).isPresent();
+    public void checkUser(long id) {
+        if (storage.findById(id).isEmpty()) {
+            throw new UserNotFoundException("User with id " + id + " doesn't exist");
+        }
     }
 }

@@ -15,4 +15,5 @@ public class ItemDto {
     private String description;
     @NotNull(message = "available cannot be null")
     private Boolean available;
+    private long requestId;
 }

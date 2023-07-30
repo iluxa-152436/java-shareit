@@ -9,6 +9,7 @@ import ru.practicum.shareit.user.entity.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ItemRequestMapper {
     public static ItemRequest toEntity(ItemRequestDto itemRequestDto, User requester, LocalDateTime created) {
@@ -26,5 +27,13 @@ public class ItemRequestMapper {
         itemRequestGetDto.setCreated(itemRequest.getCreated());
         itemRequestGetDto.setItems(ItemMapper.toItemGetDtoWithRequestId(items));
         return itemRequestGetDto;
+    }
+
+    public static List<ItemRequestGetDto> toItemRequestGetDto(List<ItemRequest> itemRequests, List<Item> items) {
+        return itemRequests.stream()
+                .map(itemRequest -> toItemRequestGetDto(itemRequest, items.stream()
+                        .filter(item -> item.getItemRequest().getId() == itemRequest.getId())
+                        .collect(Collectors.toList())))
+                .collect(Collectors.toList());
     }
 }

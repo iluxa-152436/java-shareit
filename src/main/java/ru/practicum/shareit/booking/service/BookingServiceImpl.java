@@ -12,7 +12,6 @@ import ru.practicum.shareit.booking.storage.BookingStorage;
 import ru.practicum.shareit.item.exception.ItemNotFoundException;
 import ru.practicum.shareit.item.entity.Item;
 import ru.practicum.shareit.item.service.ItemService;
-import ru.practicum.shareit.user.exception.UserDoesNotExistException;
 import ru.practicum.shareit.user.service.UserService;
 
 import java.time.LocalDateTime;
@@ -54,7 +53,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<BookingGetDto> getBookingsByBookerId(long bookerId, BookingStateFilter stateFilter) {
-        checkUser(bookerId);
+        userService.checkUser(bookerId);
         LocalDateTime now = LocalDateTime.now();
         switch (stateFilter) {
             case ALL:
@@ -81,7 +80,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<BookingGetDto> getBookingsByItemOwnerId(long ownerId, BookingStateFilter stateFilter) {
-        checkUser(ownerId);
+        userService.checkUser(ownerId);
         LocalDateTime now = LocalDateTime.now();
         switch (stateFilter) {
             case ALL:
@@ -129,12 +128,6 @@ public class BookingServiceImpl implements BookingService {
     private void checkDate(LocalDateTime start, LocalDateTime end) {
         if (!start.isBefore(end)) {
             throw new IllegalArgumentException("Start date must be before end date");
-        }
-    }
-
-    private void checkUser(long userId) {
-        if (!userService.isValidUser(userId)) {
-            throw new UserDoesNotExistException("User with id " + userId + " doesn't exist");
         }
     }
 

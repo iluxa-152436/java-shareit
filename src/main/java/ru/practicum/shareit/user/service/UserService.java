@@ -16,5 +16,5 @@ public interface UserService {
 
     void deleteUserById(long userId);
 
-    boolean isValidUser(long userId);
+    void checkUser(long userId);
 }

@@ -24,8 +24,9 @@ public class ItemRequestController {
     }
 
     @GetMapping("/{requestId}")
-    public ItemRequestGetDto getItemRequestById(@PathVariable long requestId) {
-        return itemRequestService.getItemRequestById(requestId);
+    public ItemRequestGetDto getItemRequestById(@RequestHeader(HEADER_USER_ID) long requesterId,
+                                                @PathVariable long requestId) {
+        return itemRequestService.getItemRequestById(requestId, requesterId);
     }
 
     @GetMapping
@@ -35,7 +36,8 @@ public class ItemRequestController {
 
     @GetMapping("/all")
     public List<ItemRequestGetDto> getAllItemRequestsOtherUsers(@RequestHeader(HEADER_USER_ID) long requesterId,
-                                                                @RequestParam long from, @RequestParam int size) {
+                                                                @RequestParam(required = false) long from,
+                                                                @RequestParam(required = false) int size) {
         return itemRequestService.getItemRequestsOtherUsers(requesterId, from, size);
     }
 }

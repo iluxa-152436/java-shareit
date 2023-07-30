@@ -14,7 +14,7 @@ import ru.practicum.shareit.exception.AccessException;
 import ru.practicum.shareit.item.entity.Comment;
 import ru.practicum.shareit.item.storage.CommentStorage;
 import ru.practicum.shareit.item.storage.ItemStorage;
-import ru.practicum.shareit.user.exception.UserDoesNotExistException;
+import ru.practicum.shareit.request.storage.ItemRequestStorage;
 import ru.practicum.shareit.item.entity.Item;
 import ru.practicum.shareit.user.entity.User;
 import ru.practicum.shareit.user.service.UserService;
@@ -31,12 +31,15 @@ public class ItemServiceImpl implements ItemService {
     private final BookingStorage bookingStorage;
     private final CommentStorage commentStorage;
     private final UserService userService;
+    private final ItemRequestStorage itemRequestStorage;
 
     @Transactional
     @Override
-    public ItemGetDto addNewItem(ItemDto itemDto, long userId) {
-        userService.isValidUser(userId);
-        return ItemMapper.toItemGetDto(itemStorage.save(ItemMapper.toEntity(itemDto, userService.getUserById(userId))));
+    public ItemGetDtoWithRequestId addNewItem(ItemDto itemDto, long userId) {
+        userService.checkUser(userId);
+        return ItemMapper.toItemGetDtoWithRequestId(itemStorage.save(ItemMapper.toEntity(itemDto,
+                userService.getUserById(userId),
+                itemRequestStorage.findById(itemDto.getRequestId()))));
     }
 
     @Override
@@ -50,7 +53,7 @@ public class ItemServiceImpl implements ItemService {
     public ItemGetDto updateItem(long ownerId, long itemId, ItemPatchDto itemPatchDto) {
         Item newItem = ItemMapper.toEntity(itemPatchDto, itemStorage.findById(itemId).orElseThrow());
         checkItemOwner(newItem, ownerId);
-        checkUserId(newItem.getUser().getId());
+        userService.checkUser(newItem.getUser().getId());
         return ItemMapper.toItemGetDto(itemStorage.save(newItem));
     }
 
@@ -103,12 +106,6 @@ public class ItemServiceImpl implements ItemService {
                 BookingState.APPROVED,
                 LocalDateTime.now()) < 1) {
             throw new IllegalArgumentException("No permission to add comment");
-        }
-    }
-
-    private void checkUserId(long userId) {
-        if (!userService.isValidUser(userId)) {
-            throw new UserDoesNotExistException("User with id " + userId + " doesn't exist");
         }
     }
 
