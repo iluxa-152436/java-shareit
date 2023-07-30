@@ -10,6 +10,7 @@ import ru.practicum.shareit.booking.service.BookingStateFilter;
 import javax.validation.Valid;
 
 import java.util.List;
+import java.util.Optional;
 
 import static ru.practicum.shareit.constant.Constant.DEFAULT_STATE_FILTER;
 import static ru.practicum.shareit.constant.Constant.HEADER_USER_ID;
@@ -33,14 +34,18 @@ public class BookingController {
 
     @GetMapping("/owner")
     public List<BookingGetDto> getBookingsByItemOwnerId(@RequestHeader(HEADER_USER_ID) long ownerId,
-                                                        @RequestParam(defaultValue = DEFAULT_STATE_FILTER) BookingStateFilter state) {
-        return bookingService.getBookingsByItemOwnerId(ownerId, state);
+                                                        @RequestParam(defaultValue = DEFAULT_STATE_FILTER) BookingStateFilter state,
+                                                        @RequestParam Optional<Integer> from,
+                                                        @RequestParam Optional<Integer> size) {
+        return bookingService.getBookingsByItemOwnerId(ownerId, state, from, size);
     }
 
     @GetMapping
     public List<BookingGetDto> getBookingsByBookerId(@RequestHeader(HEADER_USER_ID) long bookerId,
-                                                     @RequestParam(defaultValue = DEFAULT_STATE_FILTER) BookingStateFilter state) {
-        return bookingService.getBookingsByBookerId(bookerId, state);
+                                                     @RequestParam(defaultValue = DEFAULT_STATE_FILTER) BookingStateFilter state,
+                                                     @RequestParam Optional<Integer> from,
+                                                     @RequestParam Optional<Integer> size) {
+        return bookingService.getBookingsByBookerId(bookerId, state, from, size);
     }
 
     @PatchMapping("/{bookingId}")
