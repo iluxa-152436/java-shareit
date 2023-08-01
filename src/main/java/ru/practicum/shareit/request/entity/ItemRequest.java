@@ -1,8 +1,6 @@
 package ru.practicum.shareit.request.entity;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.apache.commons.lang3.builder.ToStringExclude;
 import ru.practicum.shareit.user.entity.User;
 
@@ -13,6 +11,8 @@ import java.time.LocalDateTime;
 @Table(name = "requests")
 @Data
 @RequiredArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ItemRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
