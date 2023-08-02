@@ -10,6 +10,8 @@ import ru.practicum.shareit.item.entity.Item;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.dto.ItemRequestGetDto;
 import ru.practicum.shareit.request.entity.ItemRequest;
+import ru.practicum.shareit.user.dto.UserDto;
+import ru.practicum.shareit.user.dto.UserPatchDto;
 import ru.practicum.shareit.user.dto.UserShortDto;
 import ru.practicum.shareit.user.entity.User;
 
@@ -23,6 +25,14 @@ public class TestData {
                 .email("email" + id + "@email.ru")
                 .name("name")
                 .build();
+    }
+
+    public static UserPatchDto prepareUserPatchDto(long id) {
+        return new UserPatchDto("name", "email@email.ru");
+    }
+
+    public static UserDto prepareUserDto(long id) {
+        return new UserDto("name", "email@email.ru");
     }
 
     public static Item prepareItem() {

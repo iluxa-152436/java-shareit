@@ -1,5 +1,6 @@
 package ru.practicum.shareit.item.service;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -7,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.practicum.shareit.booking.entity.BookingState;
 import ru.practicum.shareit.booking.storage.BookingStorage;
+import ru.practicum.shareit.exception.AccessException;
 import ru.practicum.shareit.item.dto.*;
 import ru.practicum.shareit.item.entity.Comment;
 import ru.practicum.shareit.item.entity.Item;
@@ -38,12 +40,25 @@ class ItemServiceImplTest {
     private UserService userService;
     @Mock
     private ItemRequestStorage itemRequestStorage;
+    private ItemDto itemDto;
+    private ItemGetDtoWithRequestId itemGetDtoWithRequestId;
+    private Item item;
+    private ItemPatchDto itemPatchDto;
+    private ItemGetDtoFull itemGetDtoFull;
+    private ItemGetDto itemGetDto;
+
+    @BeforeEach
+    void prepare() {
+        itemDto = prepareItemDto();
+        itemGetDtoWithRequestId = prepareItemGetDtoWithRequestId();
+        item = prepareItem();
+        itemPatchDto = prepareItemPatchDto();
+        itemGetDtoFull = prepareItemGetDtoFull();
+        itemGetDto = prepareItemGetDto();
+    }
 
     @Test
     void addNewItem() {
-        ItemDto itemDto = prepareItemDto();
-        ItemGetDtoWithRequestId itemGetDtoWithRequestId = prepareItemGetDtoWithRequestId();
-        Item item = prepareItem();
         doNothing().when(userService).checkUser(anyLong());
         when(itemStorage.save(any(Item.class))).thenReturn(item);
         when(userService.getUserById(anyLong())).thenReturn(prepareUser(1L));
@@ -57,7 +72,6 @@ class ItemServiceImplTest {
 
     @Test
     void getFullItemDtoById() {
-        Item item = prepareItem();
         when(itemStorage.findById(anyLong())).thenReturn(Optional.of(item));
 
         Item received = service.getFullItemDtoById(1L);
@@ -67,8 +81,6 @@ class ItemServiceImplTest {
 
     @Test
     void updateItem() {
-        ItemPatchDto itemPatchDto = prepareItemPatchDto();
-        Item item = prepareItem();
         Item savedItem = prepareItem();
         savedItem.setDescription(itemPatchDto.getDescription());
         savedItem.setName(itemPatchDto.getName());
@@ -83,6 +95,19 @@ class ItemServiceImplTest {
 
         assertEquals(required, itemGetDto);
         verify(itemStorage, times(1)).save(any(Item.class));
+    }
+
+    @Test
+    void updateItemException() {
+        Item savedItem = prepareItem();
+        savedItem.setDescription(itemPatchDto.getDescription());
+        savedItem.setName(itemPatchDto.getName());
+        ItemGetDto required = prepareItemGetDto();
+        required.setName(itemPatchDto.getName());
+        required.setDescription(itemPatchDto.getDescription());
+        when(itemStorage.findById(anyLong())).thenReturn(Optional.of(item));
+
+        assertThrows(AccessException.class, () -> service.updateItem(2L, 1L, itemPatchDto));
     }
 
     @Test
@@ -105,8 +130,6 @@ class ItemServiceImplTest {
 
     @Test
     void getItemByIdRequestOwner() {
-        Item item = prepareItem();
-        ItemGetDtoFull itemGetDtoFull = prepareItemGetDtoFull();
         when(itemStorage.findById(anyLong())).thenReturn(Optional.of(item));
         when(bookingStorage.findByItemIn(anyList())).thenReturn(Collections.EMPTY_LIST);
         when(commentStorage.findByItemId(anyLong())).thenReturn(Collections.EMPTY_LIST);
@@ -118,8 +141,6 @@ class ItemServiceImplTest {
 
     @Test
     void getItemByIdRequestOtherUser() {
-        Item item = prepareItem();
-        ItemGetDtoFull itemGetDtoFull = prepareItemGetDtoFull();
         when(itemStorage.findById(anyLong())).thenReturn(Optional.of(item));
         when(commentStorage.findByItemId(anyLong())).thenReturn(Collections.EMPTY_LIST);
 
@@ -130,9 +151,7 @@ class ItemServiceImplTest {
 
     @Test
     void getItemsByOwnerId2() {
-        Item item = prepareItem();
         List<Item> itemList = List.of(item);
-        ItemGetDtoFull itemGetDtoFull = prepareItemGetDtoFull();
         List<ItemGetDtoFull> required = List.of(itemGetDtoFull);
         when(itemStorage.findByUserId(anyLong())).thenReturn(itemList);
         when(bookingStorage.findByItemIn(anyList())).thenReturn(Collections.EMPTY_LIST);
@@ -145,8 +164,8 @@ class ItemServiceImplTest {
 
     @Test
     void getAvailableItemsByFilter() {
-        List<ItemGetDto> required = List.of(prepareItemGetDto());
-        List<Item> itemList = List.of(prepareItem());
+        List<ItemGetDto> required = List.of(itemGetDto);
+        List<Item> itemList = List.of(item);
         when(itemStorage.findAvailableByNameOrDescription(anyString())).thenReturn(itemList);
 
         List<ItemGetDto> items = service.getAvailableItemsByFilter("text");
@@ -160,7 +179,6 @@ class ItemServiceImplTest {
         Comment comment = prepareComment(now);
         CommentPostDto commentPostDto = prepareCommentPostDto();
         CommentGetDto required = prepareCommentGetDto(now);
-        Item item = prepareItem();
         when(bookingStorage.findCountByBookerIdAndItemIdAndState(anyLong(),
                 anyLong(),
                 any(BookingState.class),
