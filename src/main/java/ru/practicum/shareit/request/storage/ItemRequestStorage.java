@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface ItemRequestStorage extends JpaRepository<ItemRequest, Long> {
     List<ItemRequest> findByRequesterId(long requesterId);
+
     List<ItemRequest> findByRequesterIdNot(long requesterId, Pageable pageableWithSorting);
+
     List<ItemRequest> findByRequesterIdNot(long requesterId);
 }

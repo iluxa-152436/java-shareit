@@ -39,7 +39,7 @@ class ExceptionHandlerControllerTest {
         when(userService.addNewUser(any(User.class))).thenThrow(IllegalArgumentException.class);
 
         mvc.perform(post("/users")
-                        .content(mapper.writeValueAsString(prepareUser(1l)))
+                        .content(mapper.writeValueAsString(prepareUser(1L)))
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
