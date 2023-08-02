@@ -12,6 +12,7 @@ import ru.practicum.shareit.exception.AccessException;
 import ru.practicum.shareit.item.dto.*;
 import ru.practicum.shareit.item.entity.Comment;
 import ru.practicum.shareit.item.entity.Item;
+import ru.practicum.shareit.item.exception.ItemNotFoundException;
 import ru.practicum.shareit.item.storage.CommentStorage;
 import ru.practicum.shareit.item.storage.ItemStorage;
 import ru.practicum.shareit.request.storage.ItemRequestStorage;
@@ -77,6 +78,13 @@ class ItemServiceImplTest {
         Item received = service.getFullItemDtoById(1L);
 
         assertEquals(item, received);
+    }
+
+    @Test
+    void getFullItemDtoByIdNotFound() {
+        when(itemStorage.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThrows(ItemNotFoundException.class, () -> service.getFullItemDtoById(1L));
     }
 
     @Test

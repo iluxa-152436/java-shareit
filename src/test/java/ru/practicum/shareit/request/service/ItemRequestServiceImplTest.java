@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Pageable;
+import ru.practicum.shareit.item.exception.ItemNotFoundException;
 import ru.practicum.shareit.item.storage.ItemStorage;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.dto.ItemRequestGetDto;
@@ -75,6 +76,14 @@ class ItemRequestServiceImplTest {
         ItemRequestGetDto itemRequestGetDto = service.getItemRequestById(1L, 1L);
 
         assertEquals(required, itemRequestGetDto);
+    }
+
+    @Test
+    void getItemRequestByIdNotFound() {
+        doNothing().when(userService).checkUser(anyLong());
+        when(storage.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThrows(ItemNotFoundException.class, () -> service.getItemRequestById(1L, 1L));
     }
 
     @Test
