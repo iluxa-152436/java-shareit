@@ -1,6 +1,6 @@
 package ru.practicum.shareit.item.service;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.entity.Booking;
@@ -25,13 +25,25 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
     private final ItemStorage itemStorage;
     private final BookingStorage bookingStorage;
     private final CommentStorage commentStorage;
     private final UserService userService;
     private final ItemRequestStorage itemRequestStorage;
+
+    @Autowired
+    public ItemServiceImpl(ItemStorage itemStorage,
+                           BookingStorage bookingStorage,
+                           CommentStorage commentStorage,
+                           UserService userService,
+                           ItemRequestStorage itemRequestStorage) {
+        this.itemStorage = itemStorage;
+        this.bookingStorage = bookingStorage;
+        this.commentStorage = commentStorage;
+        this.userService = userService;
+        this.itemRequestStorage = itemRequestStorage;
+    }
 
     @Transactional
     @Override

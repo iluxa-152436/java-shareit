@@ -1,8 +1,8 @@
 package ru.practicum.shareit.booking.service;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Pageable;
@@ -33,8 +33,13 @@ class BookingServiceImplTest {
     private UserService userService;
     @Mock
     private ItemService itemService;
-    @InjectMocks
     private BookingService service;
+
+
+    @BeforeEach
+    void prepare() {
+        service = new BookingServiceImpl(storage, userService, itemService);
+    }
 
     @Test
     void getBookingByIdTest() {

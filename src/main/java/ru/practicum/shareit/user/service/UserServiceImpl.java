@@ -1,7 +1,7 @@
 package ru.practicum.shareit.user.service;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.user.exception.UserNotFoundException;
@@ -14,9 +14,13 @@ import java.util.List;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserStorage storage;
+
+    @Autowired
+    public UserServiceImpl(UserStorage storage) {
+        this.storage = storage;
+    }
 
     @Transactional
     @Override

@@ -1,8 +1,7 @@
 package ru.practicum.shareit.booking.service;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.dto.BookingDto;
@@ -23,11 +22,17 @@ import java.util.Optional;
 import static ru.practicum.shareit.booking.mapper.BookingMapper.*;
 
 @Service
-@RequiredArgsConstructor
 public class BookingServiceImpl implements BookingService {
     private final BookingStorage storage;
     private final UserService userService;
     private final ItemService itemService;
+
+    @Autowired
+    public BookingServiceImpl(BookingStorage storage, UserService userService, ItemService itemService) {
+        this.storage = storage;
+        this.userService = userService;
+        this.itemService = itemService;
+    }
 
     @Override
     public BookingGetDto getBookingById(long bookingId, long userId) {
@@ -61,51 +66,42 @@ public class BookingServiceImpl implements BookingService {
                                                      Optional<Integer> size) {
         userService.checkUser(bookerId);
         LocalDateTime now = LocalDateTime.now();
-        if (from.isPresent() && size.isPresent()) {
-            Pageable pageable = getPageable(from.get(), size.get());
-            switch (stateFilter) {
-                case ALL:
-                    return toBookingGetDto(storage.findByBookerIdOrderByStartDesc(bookerId, pageable));
-                case WAITING:
-                    return toBookingGetDto(storage.findByBookerIdAndStateOrderByStartDesc(bookerId,
-                            BookingState.WAITING, pageable));
-                case REJECTED:
-                    return toBookingGetDto(storage.findByBookerIdAndStateOrderByStartDesc(bookerId,
-                            BookingState.REJECTED, pageable));
-                case PAST:
-                    return toBookingGetDto(storage
-                            .findByBookerIdAndEndBeforeOrderByStartDesc(bookerId, now, pageable));
-                case FUTURE:
-                    return toBookingGetDto(storage
-                            .findByBookerIdAndStartAfterOrderByStartDesc(bookerId, now, pageable));
-                case CURRENT:
-                    return toBookingGetDto(storage
-                            .findByBookerIdAndStartBeforeAndEndAfterOrderByStartDesc(bookerId, now, now, pageable));
-                default:
-                    return null;
-            }
-        } else {
-            switch (stateFilter) {
-                case ALL:
-                    return toBookingGetDto(storage.findByBookerIdOrderByStartDesc(bookerId));
-                case WAITING:
-                    return toBookingGetDto(storage.findByBookerIdAndStateOrderByStartDesc(bookerId,
-                            BookingState.WAITING));
-                case REJECTED:
-                    return toBookingGetDto(storage.findByBookerIdAndStateOrderByStartDesc(bookerId,
-                            BookingState.REJECTED));
-                case PAST:
-                    return toBookingGetDto(storage
-                            .findByBookerIdAndEndBeforeOrderByStartDesc(bookerId, now));
-                case FUTURE:
-                    return toBookingGetDto(storage
-                            .findByBookerIdAndStartAfterOrderByStartDesc(bookerId, now));
-                case CURRENT:
-                    return toBookingGetDto(storage
-                            .findByBookerIdAndStartBeforeAndEndAfterOrderByStartDesc(bookerId, now, now));
-                default:
-                    return null;
-            }
+        Optional<PageRequest> pageable = getPageable(from, size);
+        switch (stateFilter) {
+            case ALL:
+                return pageable.map(pageRequest -> toBookingGetDto(storage.findByBookerIdOrderByStartDesc(bookerId,
+                                pageRequest)))
+                        .orElseGet(() -> toBookingGetDto(storage.findByBookerIdOrderByStartDesc(bookerId)));
+            case WAITING:
+                return pageable.map(pageRequest -> toBookingGetDto(storage
+                                .findByBookerIdAndStateOrderByStartDesc(bookerId, BookingState.WAITING, pageRequest)))
+                        .orElseGet(() -> toBookingGetDto(storage
+                                .findByBookerIdAndStateOrderByStartDesc(bookerId, BookingState.WAITING)));
+            case REJECTED:
+                return pageable.map(pageRequest -> toBookingGetDto(storage
+                                .findByBookerIdAndStateOrderByStartDesc(bookerId, BookingState.REJECTED, pageRequest)))
+                        .orElseGet(() -> toBookingGetDto(storage
+                                .findByBookerIdAndStateOrderByStartDesc(bookerId, BookingState.REJECTED)));
+            case PAST:
+                return pageable.map(pageRequest -> toBookingGetDto(storage
+                                .findByBookerIdAndEndBeforeOrderByStartDesc(bookerId, now, pageRequest)))
+                        .orElseGet(() -> toBookingGetDto(storage
+                                .findByBookerIdAndEndBeforeOrderByStartDesc(bookerId, now)));
+            case FUTURE:
+                return pageable.map(pageRequest -> toBookingGetDto(storage
+                                .findByBookerIdAndStartAfterOrderByStartDesc(bookerId, now, pageRequest)))
+                        .orElseGet(() -> toBookingGetDto(storage
+                                .findByBookerIdAndStartAfterOrderByStartDesc(bookerId, now)));
+            case CURRENT:
+                return pageable.map(pageRequest -> toBookingGetDto(storage
+                                .findByBookerIdAndStartBeforeAndEndAfterOrderByStartDesc(bookerId,
+                                        now,
+                                        now,
+                                        pageRequest)))
+                        .orElseGet(() -> toBookingGetDto(storage
+                                .findByBookerIdAndStartBeforeAndEndAfterOrderByStartDesc(bookerId, now, now)));
+            default:
+                throw new IllegalArgumentException();
         }
     }
 
@@ -116,51 +112,42 @@ public class BookingServiceImpl implements BookingService {
                                                         Optional<Integer> size) {
         userService.checkUser(ownerId);
         LocalDateTime now = LocalDateTime.now();
-        if (from.isPresent() && size.isPresent()) {
-            Pageable pageable = getPageable(from.get(), size.get());
-            switch (stateFilter) {
-                case ALL:
-                    return toBookingGetDto(storage.findByItemUserIdOrderByStartDesc(ownerId, pageable));
-                case WAITING:
-                    return toBookingGetDto(storage
-                            .findByItemUserIdAndStateOrderByStartDesc(ownerId, BookingState.WAITING, pageable));
-                case REJECTED:
-                    return toBookingGetDto(storage
-                            .findByItemUserIdAndStateOrderByStartDesc(ownerId, BookingState.REJECTED, pageable));
-                case PAST:
-                    return toBookingGetDto(storage
-                            .findByItemUserIdAndEndBeforeOrderByStartDesc(ownerId, now, pageable));
-                case FUTURE:
-                    return toBookingGetDto(storage
-                            .findByItemUserIdAndStartAfterOrderByStartDesc(ownerId, now, pageable));
-                case CURRENT:
-                    return toBookingGetDto(storage
-                            .findByItemUserIdAndStartBeforeAndEndAfterOrderByStartDesc(ownerId, now, now, pageable));
-                default:
-                    return null;
-            }
-        } else {
-            switch (stateFilter) {
-                case ALL:
-                    return toBookingGetDto(storage.findByItemUserIdOrderByStartDesc(ownerId));
-                case WAITING:
-                    return toBookingGetDto(storage
-                            .findByItemUserIdAndStateOrderByStartDesc(ownerId, BookingState.WAITING));
-                case REJECTED:
-                    return toBookingGetDto(storage
-                            .findByItemUserIdAndStateOrderByStartDesc(ownerId, BookingState.REJECTED));
-                case PAST:
-                    return toBookingGetDto(storage
-                            .findByItemUserIdAndEndBeforeOrderByStartDesc(ownerId, now));
-                case FUTURE:
-                    return toBookingGetDto(storage
-                            .findByItemUserIdAndStartAfterOrderByStartDesc(ownerId, now));
-                case CURRENT:
-                    return toBookingGetDto(storage
-                            .findByItemUserIdAndStartBeforeAndEndAfterOrderByStartDesc(ownerId, now, now));
-                default:
-                    return null;
-            }
+        Optional<PageRequest> pageable = getPageable(from, size);
+        switch (stateFilter) {
+            case ALL:
+                return pageable.map(pageRequest -> toBookingGetDto(storage
+                                .findByItemUserIdOrderByStartDesc(ownerId, pageRequest)))
+                        .orElseGet(() -> toBookingGetDto(storage.findByItemUserIdOrderByStartDesc(ownerId)));
+            case WAITING:
+                return pageable.map(pageRequest -> toBookingGetDto(storage
+                                .findByItemUserIdAndStateOrderByStartDesc(ownerId, BookingState.WAITING, pageRequest)))
+                        .orElseGet(() -> toBookingGetDto(storage
+                                .findByItemUserIdAndStateOrderByStartDesc(ownerId, BookingState.WAITING)));
+            case REJECTED:
+                return pageable.map(pageRequest -> toBookingGetDto(storage
+                                .findByItemUserIdAndStateOrderByStartDesc(ownerId, BookingState.REJECTED, pageRequest)))
+                        .orElseGet(() -> toBookingGetDto(storage
+                                .findByItemUserIdAndStateOrderByStartDesc(ownerId, BookingState.REJECTED)));
+            case PAST:
+                return pageable.map(pageRequest -> toBookingGetDto(storage
+                                .findByItemUserIdAndEndBeforeOrderByStartDesc(ownerId, now, pageRequest)))
+                        .orElseGet(() -> toBookingGetDto(storage
+                                .findByItemUserIdAndEndBeforeOrderByStartDesc(ownerId, now)));
+            case FUTURE:
+                return pageable.map(pageRequest -> toBookingGetDto(storage
+                                .findByItemUserIdAndStartAfterOrderByStartDesc(ownerId, now, pageRequest)))
+                        .orElseGet(() -> toBookingGetDto(storage
+                                .findByItemUserIdAndStartAfterOrderByStartDesc(ownerId, now)));
+            case CURRENT:
+                return pageable.map(pageRequest -> toBookingGetDto(storage
+                                .findByItemUserIdAndStartBeforeAndEndAfterOrderByStartDesc(ownerId,
+                                        now,
+                                        now,
+                                        pageRequest)))
+                        .orElseGet(() -> toBookingGetDto(storage
+                                .findByItemUserIdAndStartBeforeAndEndAfterOrderByStartDesc(ownerId, now, now)));
+            default:
+                throw new IllegalArgumentException();
         }
     }
 
@@ -196,10 +183,12 @@ public class BookingServiceImpl implements BookingService {
         }
     }
 
-    private static PageRequest getPageable(Integer from, Integer size) {
-        if (from < 0 || size < 1) {
-            throw new IllegalArgumentException("from and size must be valid");
-        }
-        return PageRequest.of(from / size, size);
+    private static Optional<PageRequest> getPageable(Optional<Integer> from, Optional<Integer> size) {
+        if (from.isPresent() && size.isPresent()) {
+            if (from.get() < 0 || size.get() < 1) {
+                throw new IllegalArgumentException("from and size must be valid");
+            }
+            return Optional.of(PageRequest.of(from.get() / size.get(), size.get()));
+        } else return Optional.empty();
     }
 }

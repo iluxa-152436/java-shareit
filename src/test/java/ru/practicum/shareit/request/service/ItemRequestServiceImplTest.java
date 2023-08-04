@@ -1,8 +1,8 @@
 package ru.practicum.shareit.request.service;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Pageable;
@@ -32,8 +32,12 @@ class ItemRequestServiceImplTest {
     private UserService userService;
     @Mock
     private ItemStorage itemStorage;
-    @InjectMocks
     private ItemRequestService service;
+
+    @BeforeEach
+    void setup() {
+        service = new ItemRequestServiceImpl(storage, userService, itemStorage);
+    }
 
     @Test
     void addNewItemRequestTest() {

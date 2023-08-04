@@ -1,6 +1,6 @@
 package ru.practicum.shareit.request.service;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -19,11 +19,17 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class ItemRequestServiceImpl implements ItemRequestService {
     private final ItemRequestStorage storage;
     private final UserService userService;
     private final ItemStorage itemStorage;
+
+    @Autowired
+    public ItemRequestServiceImpl(ItemRequestStorage storage, UserService userService, ItemStorage itemStorage) {
+        this.storage = storage;
+        this.userService = userService;
+        this.itemStorage = itemStorage;
+    }
 
     @Override
     public ItemRequestGetDto addNewItemRequest(ItemRequestDto itemRequestDto, long requesterId) {

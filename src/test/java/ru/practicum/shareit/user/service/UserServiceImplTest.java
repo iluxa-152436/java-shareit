@@ -1,8 +1,8 @@
 package ru.practicum.shareit.user.service;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.practicum.shareit.user.dto.UserPatchDto;
@@ -18,10 +18,14 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
-    @InjectMocks
     private UserService service;
     @Mock
     private UserStorage storage;
+
+    @BeforeEach
+    void setup() {
+        service = new UserServiceImpl(storage);
+    }
 
     @Test
     void addUserTest() {

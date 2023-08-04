@@ -3,7 +3,6 @@ package ru.practicum.shareit.item.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.practicum.shareit.booking.entity.BookingState;
@@ -29,7 +28,6 @@ import static ru.practicum.shareit.TestData.*;
 
 @ExtendWith(MockitoExtension.class)
 class ItemServiceImplTest {
-    @InjectMocks
     private ItemService service;
     @Mock
     private ItemStorage itemStorage;
@@ -50,6 +48,7 @@ class ItemServiceImplTest {
 
     @BeforeEach
     void prepare() {
+        service = new ItemServiceImpl(itemStorage, bookingStorage, commentStorage, userService, itemRequestStorage);
         itemDto = prepareItemDto();
         itemGetDtoWithRequestId = prepareItemGetDtoWithRequestId();
         item = prepareItem();
