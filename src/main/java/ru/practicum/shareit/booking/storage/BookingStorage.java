@@ -1,5 +1,6 @@
 package ru.practicum.shareit.booking.storage;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,23 +15,23 @@ public interface BookingStorage extends JpaRepository<Booking, Long> {
 
     List<Booking> findByBookerIdOrderByStartDesc(long bookerId);
 
-    List<Booking> findByBookerIdOrderByStartDesc(long bookerId, Pageable pageable);
+    Page<Booking> findByBookerIdOrderByStartDesc(long bookerId, Pageable pageable);
 
     List<Booking> findByBookerIdAndStateOrderByStartDesc(long bookerId, BookingState state);
 
-    List<Booking> findByBookerIdAndStateOrderByStartDesc(long bookerId, BookingState state, Pageable pageable);
+    Page<Booking> findByBookerIdAndStateOrderByStartDesc(long bookerId, BookingState state, Pageable pageable);
 
     List<Booking> findByBookerIdAndStartAfterOrderByStartDesc(long bookerId,
                                                               LocalDateTime dateTime);
 
-    List<Booking> findByBookerIdAndStartAfterOrderByStartDesc(long bookerId,
+    Page<Booking> findByBookerIdAndStartAfterOrderByStartDesc(long bookerId,
                                                               LocalDateTime dateTime,
                                                               Pageable pageable);
 
     List<Booking> findByBookerIdAndEndBeforeOrderByStartDesc(long bookerId,
                                                              LocalDateTime dateTime);
 
-    List<Booking> findByBookerIdAndEndBeforeOrderByStartDesc(long bookerId,
+    Page<Booking> findByBookerIdAndEndBeforeOrderByStartDesc(long bookerId,
                                                              LocalDateTime dateTime,
                                                              Pageable pageable);
 
@@ -38,7 +39,7 @@ public interface BookingStorage extends JpaRepository<Booking, Long> {
                                                                           LocalDateTime dateTime1,
                                                                           LocalDateTime dateTime2);
 
-    List<Booking> findByBookerIdAndStartBeforeAndEndAfterOrderByStartDesc(long bookerId,
+    Page<Booking> findByBookerIdAndStartBeforeAndEndAfterOrderByStartDesc(long bookerId,
                                                                           LocalDateTime dateTime1,
                                                                           LocalDateTime dateTime2,
                                                                           Pageable pageable);
@@ -55,17 +56,17 @@ public interface BookingStorage extends JpaRepository<Booking, Long> {
                                                                             LocalDateTime dateTime1,
                                                                             LocalDateTime dateTime2);
 
-    List<Booking> findByItemUserIdOrderByStartDesc(long ownerId, Pageable pageable);
+    Page<Booking> findByItemUserIdOrderByStartDesc(long ownerId, Pageable pageable);
 
-    List<Booking> findByItemUserIdAndStateOrderByStartDesc(long ownerId, BookingState state, Pageable pageable);
+    Page<Booking> findByItemUserIdAndStateOrderByStartDesc(long ownerId, BookingState state, Pageable pageable);
 
-    List<Booking> findByItemUserIdAndStartAfterOrderByStartDesc(long ownerId,
+    Page<Booking> findByItemUserIdAndStartAfterOrderByStartDesc(long ownerId,
                                                                 LocalDateTime dateTime,
                                                                 Pageable pageable);
 
-    List<Booking> findByItemUserIdAndEndBeforeOrderByStartDesc(long ownerId, LocalDateTime dateTime, Pageable pageable);
+    Page<Booking> findByItemUserIdAndEndBeforeOrderByStartDesc(long ownerId, LocalDateTime dateTime, Pageable pageable);
 
-    List<Booking> findByItemUserIdAndStartBeforeAndEndAfterOrderByStartDesc(long ownerId,
+    Page<Booking> findByItemUserIdAndStartBeforeAndEndAfterOrderByStartDesc(long ownerId,
                                                                             LocalDateTime dateTime1,
                                                                             LocalDateTime dateTime2,
                                                                             Pageable pageable);

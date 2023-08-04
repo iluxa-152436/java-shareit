@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import ru.practicum.shareit.item.exception.ItemNotFoundException;
 import ru.practicum.shareit.item.storage.ItemStorage;
@@ -96,7 +97,8 @@ class ItemRequestServiceImplTest {
         ItemRequest itemRequest = prepareItemRequest(now);
         List<ItemRequestGetDto> required = List.of(prepareItemRequestGetDto(now));
         doNothing().when(userService).checkUser(anyLong());
-        when(storage.findByRequesterIdNot(anyLong(), any(Pageable.class))).thenReturn(List.of(itemRequest));
+        when(storage.findByRequesterIdNot(anyLong(), any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of(itemRequest)));
         when(itemStorage.findByItemRequestRequesterIdNot(anyLong())).thenReturn(Collections.EMPTY_LIST);
 
         List<ItemRequestGetDto> itemRequestGetDtoList = service.getItemRequestsOtherUsers(2L,

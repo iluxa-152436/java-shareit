@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingGetDto;
@@ -87,7 +88,8 @@ class BookingServiceImplTest {
         List<BookingGetDto> expected = List.of(prepareBookingGetDto(now));
         List<Booking> bookings = List.of(prepareBooking(now));
         doNothing().when(userService).checkUser(anyLong());
-        when(storage.findByBookerIdOrderByStartDesc(anyLong(), any(Pageable.class))).thenReturn(bookings);
+        when(storage.findByBookerIdOrderByStartDesc(anyLong(), any(Pageable.class)))
+                .thenReturn(new PageImpl<>(bookings));
 
         List<BookingGetDto> bookingGetDtoList = service.getBookingsByBookerId(2L,
                 BookingStateFilter.ALL,
@@ -119,7 +121,8 @@ class BookingServiceImplTest {
         List<BookingGetDto> expected = List.of(prepareBookingGetDto(now));
         List<Booking> bookings = List.of(prepareBooking(now));
         doNothing().when(userService).checkUser(anyLong());
-        when(storage.findByBookerIdAndStateOrderByStartDesc(anyLong(), any(BookingState.class), any(Pageable.class))).thenReturn(bookings);
+        when(storage.findByBookerIdAndStateOrderByStartDesc(anyLong(), any(BookingState.class), any(Pageable.class)))
+                .thenReturn(new PageImpl<>(bookings));
 
         List<BookingGetDto> bookingGetDtoList = service.getBookingsByBookerId(2L,
                 BookingStateFilter.WAITING,
@@ -151,7 +154,9 @@ class BookingServiceImplTest {
         List<BookingGetDto> expected = List.of(prepareBookingGetDto(now));
         List<Booking> bookings = List.of(prepareBooking(now));
         doNothing().when(userService).checkUser(anyLong());
-        when(storage.findByBookerIdAndStateOrderByStartDesc(anyLong(), any(BookingState.class), any(Pageable.class))).thenReturn(bookings);
+        when(storage
+                .findByBookerIdAndStateOrderByStartDesc(anyLong(), any(BookingState.class), any(Pageable.class)))
+                .thenReturn(new PageImpl<>(bookings));
 
         List<BookingGetDto> bookingGetDtoList = service.getBookingsByBookerId(2L,
                 BookingStateFilter.REJECTED,
@@ -183,7 +188,9 @@ class BookingServiceImplTest {
         List<BookingGetDto> expected = List.of(prepareBookingGetDto(now));
         List<Booking> bookings = List.of(prepareBooking(now));
         doNothing().when(userService).checkUser(anyLong());
-        when(storage.findByBookerIdAndEndBeforeOrderByStartDesc(anyLong(), any(LocalDateTime.class), any(Pageable.class))).thenReturn(bookings);
+        when(storage
+                .findByBookerIdAndEndBeforeOrderByStartDesc(anyLong(), any(LocalDateTime.class), any(Pageable.class)))
+                .thenReturn(new PageImpl<>(bookings));
 
         List<BookingGetDto> bookingGetDtoList = service.getBookingsByBookerId(2L,
                 BookingStateFilter.PAST,
@@ -215,7 +222,9 @@ class BookingServiceImplTest {
         List<BookingGetDto> expected = List.of(prepareBookingGetDto(now));
         List<Booking> bookings = List.of(prepareBooking(now));
         doNothing().when(userService).checkUser(anyLong());
-        when(storage.findByBookerIdAndStartAfterOrderByStartDesc(anyLong(), any(LocalDateTime.class), any(Pageable.class))).thenReturn(bookings);
+        when(storage
+                .findByBookerIdAndStartAfterOrderByStartDesc(anyLong(), any(LocalDateTime.class), any(Pageable.class)))
+                .thenReturn(new PageImpl<>(bookings));
 
         List<BookingGetDto> bookingGetDtoList = service.getBookingsByBookerId(2L,
                 BookingStateFilter.FUTURE,
@@ -250,7 +259,7 @@ class BookingServiceImplTest {
         when(storage.findByBookerIdAndStartBeforeAndEndAfterOrderByStartDesc(anyLong(),
                 any(LocalDateTime.class),
                 any(LocalDateTime.class),
-                any(Pageable.class))).thenReturn(bookings);
+                any(Pageable.class))).thenReturn(new PageImpl<>(bookings));
 
         List<BookingGetDto> bookingGetDtoList = service.getBookingsByBookerId(2L,
                 BookingStateFilter.CURRENT,
@@ -284,7 +293,8 @@ class BookingServiceImplTest {
         List<BookingGetDto> expected = List.of(prepareBookingGetDto(now));
         List<Booking> bookings = List.of(prepareBooking(now));
         doNothing().when(userService).checkUser(anyLong());
-        when(storage.findByItemUserIdOrderByStartDesc(anyLong(), any(Pageable.class))).thenReturn(bookings);
+        when(storage.findByItemUserIdOrderByStartDesc(anyLong(), any(Pageable.class)))
+                .thenReturn(new PageImpl<>(bookings));
 
         List<BookingGetDto> bookingGetDtoList = service.getBookingsByItemOwnerId(2L,
                 BookingStateFilter.ALL,
@@ -318,7 +328,7 @@ class BookingServiceImplTest {
         doNothing().when(userService).checkUser(anyLong());
         when(storage.findByItemUserIdAndStateOrderByStartDesc(anyLong(),
                 any(BookingState.class),
-                any(Pageable.class))).thenReturn(bookings);
+                any(Pageable.class))).thenReturn(new PageImpl<>(bookings));
 
         List<BookingGetDto> bookingGetDtoList = service.getBookingsByItemOwnerId(2L,
                 BookingStateFilter.WAITING,
@@ -353,7 +363,7 @@ class BookingServiceImplTest {
         doNothing().when(userService).checkUser(anyLong());
         when(storage.findByItemUserIdAndStateOrderByStartDesc(anyLong(),
                 any(BookingState.class),
-                any(Pageable.class))).thenReturn(bookings);
+                any(Pageable.class))).thenReturn(new PageImpl<>(bookings));
 
         List<BookingGetDto> bookingGetDtoList = service.getBookingsByItemOwnerId(2L,
                 BookingStateFilter.REJECTED,
@@ -388,7 +398,7 @@ class BookingServiceImplTest {
         doNothing().when(userService).checkUser(anyLong());
         when(storage.findByItemUserIdAndEndBeforeOrderByStartDesc(anyLong(),
                 any(LocalDateTime.class),
-                any(Pageable.class))).thenReturn(bookings);
+                any(Pageable.class))).thenReturn(new PageImpl<>(bookings));
 
         List<BookingGetDto> bookingGetDtoList = service.getBookingsByItemOwnerId(2L,
                 BookingStateFilter.PAST,
@@ -423,7 +433,7 @@ class BookingServiceImplTest {
         doNothing().when(userService).checkUser(anyLong());
         when(storage.findByItemUserIdAndStartAfterOrderByStartDesc(anyLong(),
                 any(LocalDateTime.class),
-                any(Pageable.class))).thenReturn(bookings);
+                any(Pageable.class))).thenReturn(new PageImpl<>(bookings));
 
         List<BookingGetDto> bookingGetDtoList = service.getBookingsByItemOwnerId(2L,
                 BookingStateFilter.FUTURE,
@@ -459,7 +469,7 @@ class BookingServiceImplTest {
         when(storage.findByItemUserIdAndStartBeforeAndEndAfterOrderByStartDesc(anyLong(),
                 any(LocalDateTime.class),
                 any(LocalDateTime.class),
-                any(Pageable.class))).thenReturn(bookings);
+                any(Pageable.class))).thenReturn(new PageImpl<>(bookings));
 
         List<BookingGetDto> bookingGetDtoList = service.getBookingsByItemOwnerId(2L,
                 BookingStateFilter.CURRENT,

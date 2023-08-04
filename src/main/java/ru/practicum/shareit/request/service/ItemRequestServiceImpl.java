@@ -9,6 +9,7 @@ import ru.practicum.shareit.item.exception.ItemNotFoundException;
 import ru.practicum.shareit.item.storage.ItemStorage;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.dto.ItemRequestGetDto;
+import ru.practicum.shareit.request.entity.ItemRequest;
 import ru.practicum.shareit.request.mapper.ItemRequestMapper;
 import ru.practicum.shareit.request.storage.ItemRequestStorage;
 import ru.practicum.shareit.user.service.UserService;
@@ -63,7 +64,9 @@ public class ItemRequestServiceImpl implements ItemRequestService {
         userService.checkUser(requesterId);
         if (from.isPresent() && size.isPresent()) {
             Pageable pageableWithSorting = getPageable(from.get(), size.get());
-            return ItemRequestMapper.toItemRequestGetDto(storage.findByRequesterIdNot(requesterId, pageableWithSorting),
+            List<ItemRequest> itemRequests = storage.findByRequesterIdNot(requesterId,
+                    pageableWithSorting).getContent();
+            return ItemRequestMapper.toItemRequestGetDto(itemRequests,
                     itemStorage.findByItemRequestRequesterIdNot(requesterId));
         } else {
             return ItemRequestMapper.toItemRequestGetDto(storage.findByRequesterIdNot(requesterId),

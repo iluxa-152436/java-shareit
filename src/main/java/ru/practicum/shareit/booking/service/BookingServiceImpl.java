@@ -70,26 +70,28 @@ public class BookingServiceImpl implements BookingService {
         switch (stateFilter) {
             case ALL:
                 return pageable.map(pageRequest -> toBookingGetDto(storage.findByBookerIdOrderByStartDesc(bookerId,
-                                pageRequest)))
+                                pageRequest).getContent()))
                         .orElseGet(() -> toBookingGetDto(storage.findByBookerIdOrderByStartDesc(bookerId)));
             case WAITING:
                 return pageable.map(pageRequest -> toBookingGetDto(storage
-                                .findByBookerIdAndStateOrderByStartDesc(bookerId, BookingState.WAITING, pageRequest)))
+                                .findByBookerIdAndStateOrderByStartDesc(bookerId, BookingState.WAITING, pageRequest)
+                                .getContent()))
                         .orElseGet(() -> toBookingGetDto(storage
                                 .findByBookerIdAndStateOrderByStartDesc(bookerId, BookingState.WAITING)));
             case REJECTED:
                 return pageable.map(pageRequest -> toBookingGetDto(storage
-                                .findByBookerIdAndStateOrderByStartDesc(bookerId, BookingState.REJECTED, pageRequest)))
+                                .findByBookerIdAndStateOrderByStartDesc(bookerId, BookingState.REJECTED, pageRequest)
+                                .getContent()))
                         .orElseGet(() -> toBookingGetDto(storage
                                 .findByBookerIdAndStateOrderByStartDesc(bookerId, BookingState.REJECTED)));
             case PAST:
                 return pageable.map(pageRequest -> toBookingGetDto(storage
-                                .findByBookerIdAndEndBeforeOrderByStartDesc(bookerId, now, pageRequest)))
+                                .findByBookerIdAndEndBeforeOrderByStartDesc(bookerId, now, pageRequest).getContent()))
                         .orElseGet(() -> toBookingGetDto(storage
                                 .findByBookerIdAndEndBeforeOrderByStartDesc(bookerId, now)));
             case FUTURE:
                 return pageable.map(pageRequest -> toBookingGetDto(storage
-                                .findByBookerIdAndStartAfterOrderByStartDesc(bookerId, now, pageRequest)))
+                                .findByBookerIdAndStartAfterOrderByStartDesc(bookerId, now, pageRequest).getContent()))
                         .orElseGet(() -> toBookingGetDto(storage
                                 .findByBookerIdAndStartAfterOrderByStartDesc(bookerId, now)));
             case CURRENT:
@@ -97,7 +99,8 @@ public class BookingServiceImpl implements BookingService {
                                 .findByBookerIdAndStartBeforeAndEndAfterOrderByStartDesc(bookerId,
                                         now,
                                         now,
-                                        pageRequest)))
+                                        pageRequest)
+                                .getContent()))
                         .orElseGet(() -> toBookingGetDto(storage
                                 .findByBookerIdAndStartBeforeAndEndAfterOrderByStartDesc(bookerId, now, now)));
             default:
@@ -116,26 +119,28 @@ public class BookingServiceImpl implements BookingService {
         switch (stateFilter) {
             case ALL:
                 return pageable.map(pageRequest -> toBookingGetDto(storage
-                                .findByItemUserIdOrderByStartDesc(ownerId, pageRequest)))
+                                .findByItemUserIdOrderByStartDesc(ownerId, pageRequest).getContent()))
                         .orElseGet(() -> toBookingGetDto(storage.findByItemUserIdOrderByStartDesc(ownerId)));
             case WAITING:
                 return pageable.map(pageRequest -> toBookingGetDto(storage
-                                .findByItemUserIdAndStateOrderByStartDesc(ownerId, BookingState.WAITING, pageRequest)))
+                                .findByItemUserIdAndStateOrderByStartDesc(ownerId, BookingState.WAITING, pageRequest)
+                                .getContent()))
                         .orElseGet(() -> toBookingGetDto(storage
                                 .findByItemUserIdAndStateOrderByStartDesc(ownerId, BookingState.WAITING)));
             case REJECTED:
                 return pageable.map(pageRequest -> toBookingGetDto(storage
-                                .findByItemUserIdAndStateOrderByStartDesc(ownerId, BookingState.REJECTED, pageRequest)))
+                                .findByItemUserIdAndStateOrderByStartDesc(ownerId, BookingState.REJECTED, pageRequest)
+                                .getContent()))
                         .orElseGet(() -> toBookingGetDto(storage
                                 .findByItemUserIdAndStateOrderByStartDesc(ownerId, BookingState.REJECTED)));
             case PAST:
                 return pageable.map(pageRequest -> toBookingGetDto(storage
-                                .findByItemUserIdAndEndBeforeOrderByStartDesc(ownerId, now, pageRequest)))
+                                .findByItemUserIdAndEndBeforeOrderByStartDesc(ownerId, now, pageRequest).getContent()))
                         .orElseGet(() -> toBookingGetDto(storage
                                 .findByItemUserIdAndEndBeforeOrderByStartDesc(ownerId, now)));
             case FUTURE:
                 return pageable.map(pageRequest -> toBookingGetDto(storage
-                                .findByItemUserIdAndStartAfterOrderByStartDesc(ownerId, now, pageRequest)))
+                                .findByItemUserIdAndStartAfterOrderByStartDesc(ownerId, now, pageRequest).getContent()))
                         .orElseGet(() -> toBookingGetDto(storage
                                 .findByItemUserIdAndStartAfterOrderByStartDesc(ownerId, now)));
             case CURRENT:
@@ -143,7 +148,8 @@ public class BookingServiceImpl implements BookingService {
                                 .findByItemUserIdAndStartBeforeAndEndAfterOrderByStartDesc(ownerId,
                                         now,
                                         now,
-                                        pageRequest)))
+                                        pageRequest)
+                                .getContent()))
                         .orElseGet(() -> toBookingGetDto(storage
                                 .findByItemUserIdAndStartBeforeAndEndAfterOrderByStartDesc(ownerId, now, now)));
             default:
