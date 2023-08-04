@@ -39,14 +39,14 @@ class ExceptionHandlerControllerTest {
     @Autowired
     private ObjectMapper mapper;
     @MockBean
-    UserService userService;
+    private UserService userService;
     @MockBean
-    ItemService itemService;
+    private ItemService itemService;
     @MockBean
-    BookingService bookingService;
+    private BookingService bookingService;
 
     @Test
-    void handleException() throws Exception {
+    void handleExceptionTest() throws Exception {
         when(userService.addNewUser(any(User.class))).thenThrow(IllegalArgumentException.class);
 
         mvc.perform(post("/users")
@@ -58,7 +58,7 @@ class ExceptionHandlerControllerTest {
     }
 
     @Test
-    void handleConflictException() throws Exception {
+    void handleConflictExceptionTest() throws Exception {
         when(userService.addNewUser(any(User.class))).thenThrow(ConflictException.class);
 
         mvc.perform(post("/users")
@@ -70,7 +70,7 @@ class ExceptionHandlerControllerTest {
     }
 
     @Test
-    void getTestNotFound() throws Exception {
+    void getTestNotFoundTest() throws Exception {
         when(userService.getUserById(anyLong())).thenThrow(UserNotFoundException.class);
 
         mvc.perform(get("/users/1")
@@ -81,7 +81,7 @@ class ExceptionHandlerControllerTest {
     }
 
     @Test
-    void patchTestAccessException() throws Exception {
+    void patchTestAccessExceptionTest() throws Exception {
         when(itemService.updateItem(anyLong(), anyLong(), any(ItemPatchDto.class))).thenThrow(AccessException.class);
 
         mvc.perform(patch("/items/1")
@@ -94,7 +94,7 @@ class ExceptionHandlerControllerTest {
     }
 
     @Test
-    void getBookingsByBookerId() throws Exception {
+    void getBookingsByBookerIdTest() throws Exception {
         when(bookingService.getBookingsByBookerId(anyLong(),
                 any(BookingStateFilter.class),
                 any(Optional.class),

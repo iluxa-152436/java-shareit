@@ -200,6 +200,6 @@ public class BookingServiceImpl implements BookingService {
         if (from < 0 || size < 1) {
             throw new IllegalArgumentException("from and size must be valid");
         }
-            return PageRequest.of(from / size, size);
+        return PageRequest.of(from / size, size);
     }
 }

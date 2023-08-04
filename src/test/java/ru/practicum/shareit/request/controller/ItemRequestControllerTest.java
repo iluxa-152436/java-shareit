@@ -29,7 +29,7 @@ class ItemRequestControllerTest {
     @Autowired
     private MockMvc mvc;
     @MockBean
-    ItemRequestService itemRequestService;
+    private ItemRequestService itemRequestService;
     private ItemRequestGetDto itemRequestGetDto;
     private ItemRequestDto itemRequestDto;
 
@@ -41,7 +41,7 @@ class ItemRequestControllerTest {
     }
 
     @Test
-    void add() throws Exception {
+    void addTest() throws Exception {
         when(itemRequestService.addNewItemRequest(any(ItemRequestDto.class), anyLong())).thenReturn(itemRequestGetDto);
 
         mvc.perform(post("/requests")
@@ -58,7 +58,7 @@ class ItemRequestControllerTest {
     }
 
     @Test
-    void getItemRequestById() throws Exception {
+    void getItemRequestByIdTest() throws Exception {
         when(itemRequestService.getItemRequestById(anyLong(), anyLong())).thenReturn(itemRequestGetDto);
 
         mvc.perform(get("/requests/1")
@@ -74,7 +74,7 @@ class ItemRequestControllerTest {
     }
 
     @Test
-    void getAllItemRequestsByRequesterId() throws Exception {
+    void getAllItemRequestsByRequesterIdTest() throws Exception {
         when(itemRequestService.getItemRequestsByRequesterId(anyLong())).thenReturn(List.of(itemRequestGetDto));
 
         mvc.perform(get("/requests")
@@ -90,7 +90,7 @@ class ItemRequestControllerTest {
     }
 
     @Test
-    void getAllItemRequestsOtherUsers() throws Exception {
+    void getAllItemRequestsOtherUsersTest() throws Exception {
         when(itemRequestService.getItemRequestsOtherUsers(anyLong(),
                 any(Optional.class),
                 any(Optional.class))).thenReturn(List.of(itemRequestGetDto));

@@ -26,9 +26,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(controllers = BookingController.class)
 class BookingControllerTest {
     @Autowired
-    ObjectMapper mapper;
+    private ObjectMapper mapper;
     @MockBean
-    BookingService service;
+    private BookingService service;
     @Autowired
     private MockMvc mvc;
     private LocalDateTime now;
@@ -43,7 +43,7 @@ class BookingControllerTest {
     }
 
     @Test
-    void add() throws Exception {
+    void addTest() throws Exception {
         when(service.addNewBooking(any(BookingDto.class), anyLong())).thenReturn(bookingGetDto);
 
         mvc.perform(post("/bookings")
@@ -60,7 +60,7 @@ class BookingControllerTest {
     }
 
     @Test
-    void getById() throws Exception {
+    void getByIdTest() throws Exception {
         when(service.getBookingById(anyLong(), anyLong())).thenReturn(bookingGetDto);
 
         mvc.perform(get("/bookings/1")
@@ -76,7 +76,7 @@ class BookingControllerTest {
     }
 
     @Test
-    void getBookingsByItemOwnerId() throws Exception {
+    void getBookingsByItemOwnerIdTest() throws Exception {
         when(service.getBookingsByItemOwnerId(anyLong(),
                 any(BookingStateFilter.class),
                 any(Optional.class),
@@ -97,7 +97,7 @@ class BookingControllerTest {
     }
 
     @Test
-    void getBookingsByBookerId() throws Exception {
+    void getBookingsByBookerIdTest() throws Exception {
         when(service.getBookingsByBookerId(anyLong(),
                 any(BookingStateFilter.class),
                 any(Optional.class),
@@ -118,7 +118,7 @@ class BookingControllerTest {
     }
 
     @Test
-    void patchBookingByItemOwner() throws Exception {
+    void patchBookingByItemOwnerTest() throws Exception {
         when(service.updateBookingByItemOwner(anyLong(), anyLong(), anyBoolean())).thenReturn(bookingGetDto);
 
         mvc.perform(patch("/bookings/1")

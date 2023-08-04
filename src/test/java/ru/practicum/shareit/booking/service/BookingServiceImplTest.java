@@ -34,10 +34,10 @@ class BookingServiceImplTest {
     @Mock
     private ItemService itemService;
     @InjectMocks
-    BookingServiceImpl service;
+    private BookingService service;
 
     @Test
-    void getBookingById() {
+    void getBookingByIdTest() {
         LocalDateTime now = LocalDateTime.now();
         BookingGetDto required = prepareBookingGetDto(now);
         Booking booking = prepareBooking(now);
@@ -49,7 +49,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void addNewBooking() {
+    void addNewBookingTest() {
         LocalDateTime now = LocalDateTime.now();
         BookingDto bookingDto = prepareBookingDto(now);
         BookingGetDto expected = prepareBookingGetDto(now);
@@ -67,18 +67,17 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void addNewBookingDateException() {
+    void addNewBookingDateExceptionTest() {
         LocalDateTime now = LocalDateTime.now();
         BookingDto bookingDto = prepareBookingDto(now);
         bookingDto.setStart(now);
         bookingDto.setEnd(now.minusDays(1));
 
         assertThrows(IllegalArgumentException.class, () -> service.addNewBooking(bookingDto, 2L));
-
     }
 
     @Test
-    void getBookingsByBookerIdPageableAll() {
+    void getBookingsByBookerIdPageableAllTest() {
         LocalDateTime now = LocalDateTime.now();
         List<BookingGetDto> expected = List.of(prepareBookingGetDto(now));
         List<Booking> bookings = List.of(prepareBooking(now));
@@ -94,7 +93,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getBookingsByBookerIdAll() {
+    void getBookingsByBookerIdAllTest() {
         LocalDateTime now = LocalDateTime.now();
         List<BookingGetDto> expected = List.of(prepareBookingGetDto(now));
         List<Booking> bookings = List.of(prepareBooking(now));
@@ -110,7 +109,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getBookingsByBookerIdPageableWaiting() {
+    void getBookingsByBookerIdPageableWaitingTest() {
         LocalDateTime now = LocalDateTime.now();
         List<BookingGetDto> expected = List.of(prepareBookingGetDto(now));
         List<Booking> bookings = List.of(prepareBooking(now));
@@ -126,7 +125,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getBookingsByBookerIdWaiting() {
+    void getBookingsByBookerIdWaitingTest() {
         LocalDateTime now = LocalDateTime.now();
         List<BookingGetDto> expected = List.of(prepareBookingGetDto(now));
         List<Booking> bookings = List.of(prepareBooking(now));
@@ -142,7 +141,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getBookingsByBookerIdPageableRejected() {
+    void getBookingsByBookerIdPageableRejectedTest() {
         LocalDateTime now = LocalDateTime.now();
         List<BookingGetDto> expected = List.of(prepareBookingGetDto(now));
         List<Booking> bookings = List.of(prepareBooking(now));
@@ -158,7 +157,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getBookingsByBookerIdRejected() {
+    void getBookingsByBookerIdRejectedTest() {
         LocalDateTime now = LocalDateTime.now();
         List<BookingGetDto> expected = List.of(prepareBookingGetDto(now));
         List<Booking> bookings = List.of(prepareBooking(now));
@@ -174,7 +173,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getBookingsByBookerIdPageablePast() {
+    void getBookingsByBookerIdPageablePastTest() {
         LocalDateTime now = LocalDateTime.now();
         List<BookingGetDto> expected = List.of(prepareBookingGetDto(now));
         List<Booking> bookings = List.of(prepareBooking(now));
@@ -190,7 +189,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getBookingsByBookerIdPast() {
+    void getBookingsByBookerIdPastTest() {
         LocalDateTime now = LocalDateTime.now();
         List<BookingGetDto> expected = List.of(prepareBookingGetDto(now));
         List<Booking> bookings = List.of(prepareBooking(now));
@@ -206,7 +205,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getBookingsByBookerIdPageableFuture() {
+    void getBookingsByBookerIdPageableFutureTest() {
         LocalDateTime now = LocalDateTime.now();
         List<BookingGetDto> expected = List.of(prepareBookingGetDto(now));
         List<Booking> bookings = List.of(prepareBooking(now));
@@ -222,7 +221,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getBookingsByBookerIdFuture() {
+    void getBookingsByBookerIdFutureTest() {
         LocalDateTime now = LocalDateTime.now();
         List<BookingGetDto> expected = List.of(prepareBookingGetDto(now));
         List<Booking> bookings = List.of(prepareBooking(now));
@@ -238,7 +237,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getBookingsByBookerIdPageableCurrent() {
+    void getBookingsByBookerIdPageableCurrentTest() {
         LocalDateTime now = LocalDateTime.now();
         List<BookingGetDto> expected = List.of(prepareBookingGetDto(now));
         List<Booking> bookings = List.of(prepareBooking(now));
@@ -257,7 +256,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getBookingsByBookerIdCurrent() {
+    void getBookingsByBookerIdCurrentTest() {
         LocalDateTime now = LocalDateTime.now();
         List<BookingGetDto> expected = List.of(prepareBookingGetDto(now));
         List<Booking> bookings = List.of(prepareBooking(now));
@@ -275,7 +274,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getBookingsByItemOwnerIdPageableAll() {
+    void getBookingsByItemOwnerIdPageableAllTest() {
         LocalDateTime now = LocalDateTime.now();
         List<BookingGetDto> expected = List.of(prepareBookingGetDto(now));
         List<Booking> bookings = List.of(prepareBooking(now));
@@ -291,7 +290,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getBookingsByItemOwnerIdAll() {
+    void getBookingsByItemOwnerIdAllTest() {
         LocalDateTime now = LocalDateTime.now();
         List<BookingGetDto> expected = List.of(prepareBookingGetDto(now));
         List<Booking> bookings = List.of(prepareBooking(now));
@@ -307,7 +306,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getBookingsByItemOwnerIdPageableWaiting() {
+    void getBookingsByItemOwnerIdPageableWaitingTest() {
         LocalDateTime now = LocalDateTime.now();
         List<BookingGetDto> expected = List.of(prepareBookingGetDto(now));
         List<Booking> bookings = List.of(prepareBooking(now));
@@ -325,7 +324,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getBookingsByItemOwnerIdWaiting() {
+    void getBookingsByItemOwnerIdWaitingTest() {
         LocalDateTime now = LocalDateTime.now();
         List<BookingGetDto> expected = List.of(prepareBookingGetDto(now));
         List<Booking> bookings = List.of(prepareBooking(now));
@@ -342,7 +341,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getBookingsByItemOwnerIdPageableRejected() {
+    void getBookingsByItemOwnerIdPageableRejectedTest() {
         LocalDateTime now = LocalDateTime.now();
         List<BookingGetDto> expected = List.of(prepareBookingGetDto(now));
         List<Booking> bookings = List.of(prepareBooking(now));
@@ -360,7 +359,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getBookingsByItemOwnerIdRejected() {
+    void getBookingsByItemOwnerIdRejectedTest() {
         LocalDateTime now = LocalDateTime.now();
         List<BookingGetDto> expected = List.of(prepareBookingGetDto(now));
         List<Booking> bookings = List.of(prepareBooking(now));
@@ -377,7 +376,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getBookingsByItemOwnerIdPageablePast() {
+    void getBookingsByItemOwnerIdPageablePastTest() {
         LocalDateTime now = LocalDateTime.now();
         List<BookingGetDto> expected = List.of(prepareBookingGetDto(now));
         List<Booking> bookings = List.of(prepareBooking(now));
@@ -395,7 +394,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getBookingsByItemOwnerIdPast() {
+    void getBookingsByItemOwnerIdPastTest() {
         LocalDateTime now = LocalDateTime.now();
         List<BookingGetDto> expected = List.of(prepareBookingGetDto(now));
         List<Booking> bookings = List.of(prepareBooking(now));
@@ -412,7 +411,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getBookingsByItemOwnerIdPageableFuture() {
+    void getBookingsByItemOwnerIdPageableFutureTest() {
         LocalDateTime now = LocalDateTime.now();
         List<BookingGetDto> expected = List.of(prepareBookingGetDto(now));
         List<Booking> bookings = List.of(prepareBooking(now));
@@ -430,7 +429,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getBookingsByItemOwnerIdFuture() {
+    void getBookingsByItemOwnerIdFutureTest() {
         LocalDateTime now = LocalDateTime.now();
         List<BookingGetDto> expected = List.of(prepareBookingGetDto(now));
         List<Booking> bookings = List.of(prepareBooking(now));
@@ -447,7 +446,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getBookingsByItemOwnerIdPageableCurrent() {
+    void getBookingsByItemOwnerIdPageableCurrentTest() {
         LocalDateTime now = LocalDateTime.now();
         List<BookingGetDto> expected = List.of(prepareBookingGetDto(now));
         List<Booking> bookings = List.of(prepareBooking(now));
@@ -466,7 +465,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void getBookingsByItemOwnerIdCurrent() {
+    void getBookingsByItemOwnerIdCurrentTest() {
         LocalDateTime now = LocalDateTime.now();
         List<BookingGetDto> expected = List.of(prepareBookingGetDto(now));
         List<Booking> bookings = List.of(prepareBooking(now));
@@ -484,7 +483,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void updateBookingByItemOwner() {
+    void updateBookingByItemOwnerTest() {
         LocalDateTime now = LocalDateTime.now();
         BookingGetDto expected = prepareBookingGetDto(now);
         expected.setStatus(BookingState.APPROVED);
@@ -501,7 +500,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void updateBookingByItemOwnerStateException() {
+    void updateBookingByItemOwnerStateExceptionTest() {
         LocalDateTime now = LocalDateTime.now();
         Booking booking = prepareBooking(now);
         booking.setState(BookingState.APPROVED);
@@ -513,7 +512,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void updateBookingByItemOwnerRejected() {
+    void updateBookingByItemOwnerRejectedTest() {
         LocalDateTime now = LocalDateTime.now();
         BookingGetDto expected = prepareBookingGetDto(now);
         expected.setStatus(BookingState.REJECTED);
@@ -530,7 +529,7 @@ class BookingServiceImplTest {
     }
 
     @Test
-    void updateBookingByItemOwnerNotFoundException() {
+    void updateBookingByItemOwnerNotFoundExceptionTest() {
         LocalDateTime now = LocalDateTime.now();
         Booking booking = prepareBooking(now);
         when(storage.findById(anyLong())).thenReturn(Optional.of(booking));

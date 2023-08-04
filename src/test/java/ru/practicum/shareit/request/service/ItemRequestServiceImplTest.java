@@ -27,16 +27,16 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class ItemRequestServiceImplTest {
     @Mock
-    ItemRequestStorage storage;
+    private ItemRequestStorage storage;
     @Mock
-    UserService userService;
+    private UserService userService;
     @Mock
-    ItemStorage itemStorage;
+    private ItemStorage itemStorage;
     @InjectMocks
-    ItemRequestServiceImpl service;
+    private ItemRequestService service;
 
     @Test
-    void addNewItemRequest() {
+    void addNewItemRequestTest() {
         LocalDateTime now = LocalDateTime.now();
         ItemRequestDto itemRequestDto = prepareItemRequestDto();
         ItemRequestGetDto required = prepareItemRequestGetDto(now);
@@ -52,7 +52,7 @@ class ItemRequestServiceImplTest {
     }
 
     @Test
-    void getItemRequestsByRequesterId() {
+    void getItemRequestsByRequesterIdTest() {
         LocalDateTime now = LocalDateTime.now();
         List<ItemRequestGetDto> required = List.of(prepareItemRequestGetDto(now));
         doNothing().when(userService).checkUser(anyLong());
@@ -65,7 +65,7 @@ class ItemRequestServiceImplTest {
     }
 
     @Test
-    void getItemRequestById() {
+    void getItemRequestByIdTest() {
         LocalDateTime now = LocalDateTime.now();
         ItemRequest itemRequest = prepareItemRequest(now);
         ItemRequestGetDto required = prepareItemRequestGetDto(now);
@@ -79,7 +79,7 @@ class ItemRequestServiceImplTest {
     }
 
     @Test
-    void getItemRequestByIdNotFound() {
+    void getItemRequestByIdNotFoundTest() {
         doNothing().when(userService).checkUser(anyLong());
         when(storage.findById(anyLong())).thenReturn(Optional.empty());
 
@@ -87,7 +87,7 @@ class ItemRequestServiceImplTest {
     }
 
     @Test
-    void getItemRequestsOtherUsersPaginated() {
+    void getItemRequestsOtherUsersPaginatedTest() {
         LocalDateTime now = LocalDateTime.now();
         ItemRequest itemRequest = prepareItemRequest(now);
         List<ItemRequestGetDto> required = List.of(prepareItemRequestGetDto(now));
@@ -103,7 +103,7 @@ class ItemRequestServiceImplTest {
     }
 
     @Test
-    void getItemRequestsOtherUsers() {
+    void getItemRequestsOtherUsersTest() {
         LocalDateTime now = LocalDateTime.now();
         ItemRequest itemRequest = prepareItemRequest(now);
         List<ItemRequestGetDto> required = List.of(prepareItemRequestGetDto(now));

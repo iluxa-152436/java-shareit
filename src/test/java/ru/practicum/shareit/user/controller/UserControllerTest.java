@@ -28,7 +28,7 @@ class UserControllerTest {
     @Autowired
     private MockMvc mvc;
     @MockBean
-    UserService userService;
+    private UserService userService;
     private User user;
     private UserPatchDto userPatchDto;
     private UserDto userDto;
@@ -42,7 +42,7 @@ class UserControllerTest {
 
 
     @Test
-    void add() throws Exception {
+    void addTest() throws Exception {
         when(userService.addNewUser(any(User.class))).thenReturn(user);
 
         mvc.perform(post("/users")
@@ -71,7 +71,7 @@ class UserControllerTest {
     }
 
     @Test
-    void getAll() throws Exception {
+    void getAllTest() throws Exception {
         when(userService.getAllUsers()).thenReturn(List.of(user));
 
         mvc.perform(get("/users")

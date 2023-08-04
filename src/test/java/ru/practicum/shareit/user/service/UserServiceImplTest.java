@@ -19,12 +19,12 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
     @InjectMocks
-    private UserServiceImpl service;
+    private UserService service;
     @Mock
     private UserStorage storage;
 
     @Test
-    void addUser() {
+    void addUserTest() {
         final User userToSave = User.builder()
                 .id(1L)
                 .email("email@email.ru")
@@ -40,7 +40,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void getUserById() {
+    void getUserByIdTest() {
         final User expected = User.builder().id(1L).email("email@email.ru").name("name").build();
         when(storage.findById(anyLong())).thenReturn(Optional.of(expected));
 
@@ -52,7 +52,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void getUserByIdThatDoesNotExist() {
+    void getUserByIdThatDoesNotExistTest() {
         when(storage.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThrows(UserNotFoundException.class, () -> service.getUserById(99L));
@@ -60,7 +60,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void checkUser() {
+    void checkUserTest() {
         when(storage.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThrows(UserNotFoundException.class, () -> service.checkUser(99L));
@@ -68,7 +68,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void updateUser() {
+    void updateUserTest() {
         Long updatedUserId = 1L;
         String email = "updated_email@email.ru";
         String name = "updated name";
@@ -86,7 +86,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void getAllUsers() {
+    void getAllUsersTest() {
         final User expected1 = User.builder().id(1L).email("email1@email.ru").name("name1").build();
         final User expected2 = User.builder().id(2L).email("email2@email.ru").name("name2").build();
         List<User> expectedList = List.of(expected1, expected2);
@@ -99,7 +99,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void deleteUser() {
+    void deleteUserTest() {
         doNothing().when(storage).deleteById(anyLong());
 
         service.deleteUserById(1L);

@@ -27,7 +27,7 @@ class ItemControllerTest {
     @Autowired
     private MockMvc mvc;
     @MockBean
-    ItemService service;
+    private ItemService service;
     private ItemGetDtoFull itemGetDtoFull;
     private ItemGetDtoWithRequestId itemGetDtoWithRequestId;
     private ItemGetDto itemGetDto;

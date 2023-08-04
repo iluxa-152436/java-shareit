@@ -30,7 +30,7 @@ import static ru.practicum.shareit.TestData.*;
 @ExtendWith(MockitoExtension.class)
 class ItemServiceImplTest {
     @InjectMocks
-    private ItemServiceImpl service;
+    private ItemService service;
     @Mock
     private ItemStorage itemStorage;
     @Mock
