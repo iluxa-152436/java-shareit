@@ -6,6 +6,7 @@ import ru.practicum.shareit.booking.mapper.BookingMapper;
 import ru.practicum.shareit.item.dto.*;
 import ru.practicum.shareit.item.entity.Comment;
 import ru.practicum.shareit.item.entity.Item;
+import ru.practicum.shareit.request.entity.ItemRequest;
 import ru.practicum.shareit.user.entity.User;
 
 import java.time.LocalDateTime;
@@ -16,12 +17,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ItemMapper {
-    public static Item toEntity(ItemDto itemDto, User user) {
+    public static Item toEntity(ItemDto itemDto, User user, Optional<ItemRequest> itemRequest) {
         Item item = new Item();
         item.setName(itemDto.getName());
         item.setDescription(itemDto.getDescription());
         item.setAvailable(itemDto.getAvailable());
         item.setUser(user);
+        itemRequest.ifPresent(item::setItemRequest);
         return item;
     }
 
@@ -39,16 +41,11 @@ public class ItemMapper {
         itemGetDto.setName(item.getName());
         itemGetDto.setDescription(item.getDescription());
         itemGetDto.setAvailable(item.getAvailable());
-        itemGetDto.setOwnerId(item.getUser().getId());
         return itemGetDto;
     }
 
     public static List<ItemGetDto> toItemGetDto(List<Item> items) {
-        List<ItemGetDto> itemGetDtoList = new ArrayList<>();
-        for (Item item : items) {
-            itemGetDtoList.add(toItemGetDto(item));
-        }
-        return itemGetDtoList;
+        return items.stream().map(ItemMapper::toItemGetDto).collect(Collectors.toList());
     }
 
     public static ItemShortDto toItemShortDto(Item item) {
@@ -114,5 +111,21 @@ public class ItemMapper {
         nextBooking.ifPresent(booking -> itemGetDtoFull.setNextBooking(BookingMapper.toBookingShortDto(booking)));
         itemGetDtoFull.setComments(CommentMapper.toCommentGetDto(comments));
         return itemGetDtoFull;
+    }
+
+    public static List<ItemGetDtoWithRequestId> toItemGetDtoWithRequestId(List<Item> items) {
+        return items.stream().map(ItemMapper::toItemGetDtoWithRequestId).collect(Collectors.toList());
+    }
+
+    public static ItemGetDtoWithRequestId toItemGetDtoWithRequestId(Item item) {
+        ItemGetDtoWithRequestId itemGetDtoWithRequestId = new ItemGetDtoWithRequestId();
+        itemGetDtoWithRequestId.setId(item.getId());
+        if (item.getItemRequest() != null) {
+            itemGetDtoWithRequestId.setRequestId(item.getItemRequest().getId());
+        }
+        itemGetDtoWithRequestId.setAvailable(item.getAvailable());
+        itemGetDtoWithRequestId.setDescription(item.getDescription());
+        itemGetDtoWithRequestId.setName(item.getName());
+        return itemGetDtoWithRequestId;
     }
 }

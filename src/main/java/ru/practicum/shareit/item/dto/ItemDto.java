@@ -1,12 +1,13 @@
 package ru.practicum.shareit.item.dto;
 
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Data
 public class ItemDto {
     @NotBlank(message = "name cannot be empty")
@@ -15,4 +16,5 @@ public class ItemDto {
     private String description;
     @NotNull(message = "available cannot be null")
     private Boolean available;
+    private long requestId;
 }

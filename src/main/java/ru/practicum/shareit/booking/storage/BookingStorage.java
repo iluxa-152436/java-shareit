@@ -1,5 +1,7 @@
 package ru.practicum.shareit.booking.storage;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import ru.practicum.shareit.booking.entity.Booking;
@@ -13,17 +15,34 @@ public interface BookingStorage extends JpaRepository<Booking, Long> {
 
     List<Booking> findByBookerIdOrderByStartDesc(long bookerId);
 
+    Page<Booking> findByBookerIdOrderByStartDesc(long bookerId, Pageable pageable);
+
     List<Booking> findByBookerIdAndStateOrderByStartDesc(long bookerId, BookingState state);
+
+    Page<Booking> findByBookerIdAndStateOrderByStartDesc(long bookerId, BookingState state, Pageable pageable);
 
     List<Booking> findByBookerIdAndStartAfterOrderByStartDesc(long bookerId,
                                                               LocalDateTime dateTime);
 
+    Page<Booking> findByBookerIdAndStartAfterOrderByStartDesc(long bookerId,
+                                                              LocalDateTime dateTime,
+                                                              Pageable pageable);
+
     List<Booking> findByBookerIdAndEndBeforeOrderByStartDesc(long bookerId,
                                                              LocalDateTime dateTime);
+
+    Page<Booking> findByBookerIdAndEndBeforeOrderByStartDesc(long bookerId,
+                                                             LocalDateTime dateTime,
+                                                             Pageable pageable);
 
     List<Booking> findByBookerIdAndStartBeforeAndEndAfterOrderByStartDesc(long bookerId,
                                                                           LocalDateTime dateTime1,
                                                                           LocalDateTime dateTime2);
+
+    Page<Booking> findByBookerIdAndStartBeforeAndEndAfterOrderByStartDesc(long bookerId,
+                                                                          LocalDateTime dateTime1,
+                                                                          LocalDateTime dateTime2,
+                                                                          Pageable pageable);
 
     List<Booking> findByItemUserIdOrderByStartDesc(long ownerId);
 
@@ -36,6 +55,21 @@ public interface BookingStorage extends JpaRepository<Booking, Long> {
     List<Booking> findByItemUserIdAndStartBeforeAndEndAfterOrderByStartDesc(long ownerId,
                                                                             LocalDateTime dateTime1,
                                                                             LocalDateTime dateTime2);
+
+    Page<Booking> findByItemUserIdOrderByStartDesc(long ownerId, Pageable pageable);
+
+    Page<Booking> findByItemUserIdAndStateOrderByStartDesc(long ownerId, BookingState state, Pageable pageable);
+
+    Page<Booking> findByItemUserIdAndStartAfterOrderByStartDesc(long ownerId,
+                                                                LocalDateTime dateTime,
+                                                                Pageable pageable);
+
+    Page<Booking> findByItemUserIdAndEndBeforeOrderByStartDesc(long ownerId, LocalDateTime dateTime, Pageable pageable);
+
+    Page<Booking> findByItemUserIdAndStartBeforeAndEndAfterOrderByStartDesc(long ownerId,
+                                                                            LocalDateTime dateTime1,
+                                                                            LocalDateTime dateTime2,
+                                                                            Pageable pageable);
 
     List<Booking> findByItemIn(List<Item> items);
 

@@ -15,7 +15,7 @@ public interface ItemService {
 
     List<ItemGetDto> getAvailableItemsByFilter(String text);
 
-    ItemGetDto addNewItem(ItemDto itemDto, long userId);
+    ItemGetDtoWithRequestId addNewItem(ItemDto itemDto, long userId);
 
     Item getFullItemDtoById(long itemId);
 

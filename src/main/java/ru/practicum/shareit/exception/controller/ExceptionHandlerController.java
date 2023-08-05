@@ -12,7 +12,7 @@ import ru.practicum.shareit.booking.exception.BookingNotFoundException;
 import ru.practicum.shareit.exception.ApiErrorMessage;
 import ru.practicum.shareit.exception.AccessException;
 import ru.practicum.shareit.item.exception.ItemNotFoundException;
-import ru.practicum.shareit.user.exception.UserDoesNotExistException;
+import ru.practicum.shareit.user.exception.UserNotFoundException;
 import ru.practicum.shareit.user.exception.ConflictException;
 
 
@@ -45,10 +45,11 @@ public class ExceptionHandlerController {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiErrorMessage(exception.getMessage()));
     }
 
-    @ExceptionHandler(value = {UserDoesNotExistException.class,
+    @ExceptionHandler(value = {UserNotFoundException.class,
             ItemNotFoundException.class,
-            BookingNotFoundException.class})
-    public ResponseEntity<ApiErrorMessage> handleUserDoesNotExistResponse(Exception exception) {
+            BookingNotFoundException.class,
+            ItemNotFoundException.class})
+    public ResponseEntity<ApiErrorMessage> handleNotFoundResponse(Exception exception) {
         log.debug("Получен код 404 Not found [{}]", exception.getMessage(), exception);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiErrorMessage(exception.getMessage()));
     }

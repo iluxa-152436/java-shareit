@@ -1,5 +1,7 @@
 package ru.practicum.shareit.item.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.practicum.shareit.user.entity.User;
@@ -11,6 +13,8 @@ import java.time.LocalDateTime;
 @Data
 @Table(name = "comments")
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

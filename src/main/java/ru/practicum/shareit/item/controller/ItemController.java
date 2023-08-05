@@ -19,7 +19,7 @@ public class ItemController {
     private final ItemService itemService;
 
     @PostMapping
-    public ItemGetDto add(@RequestBody @Valid ItemDto itemDto, @RequestHeader(HEADER_USER_ID) long userId) {
+    public ItemGetDtoWithRequestId add(@RequestBody @Valid ItemDto itemDto, @RequestHeader(HEADER_USER_ID) long userId) {
         return itemService.addNewItem(itemDto, userId);
     }
 

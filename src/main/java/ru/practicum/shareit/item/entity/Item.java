@@ -1,9 +1,7 @@
 package ru.practicum.shareit.item.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import lombok.*;
+import ru.practicum.shareit.request.entity.ItemRequest;
 import ru.practicum.shareit.user.entity.User;
 
 import javax.persistence.*;
@@ -11,6 +9,7 @@ import javax.validation.constraints.NotBlank;
 
 @RequiredArgsConstructor
 @AllArgsConstructor
+@Builder
 @Data
 @Entity
 @Table(name = "items")
@@ -30,6 +29,10 @@ public class Item {
     @JoinColumn(name = "user_id")
     @ToString.Exclude
     private User user;
+    @OneToOne
+    @JoinColumn(name = "requestId")
+    @ToString.Exclude
+    private ItemRequest itemRequest;
 
     public Item(Item item) {
         this.id = item.getId();
@@ -37,5 +40,6 @@ public class Item {
         this.description = item.getDescription();
         this.available = item.getAvailable();
         this.user = item.getUser();
+        this.itemRequest = item.getItemRequest();
     }
 }
