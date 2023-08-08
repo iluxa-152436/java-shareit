@@ -89,7 +89,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemGetDtoFull> getItemsByOwnerId(long ownerId) {
-        List<Item> items = itemStorage.findByUserId(ownerId);
+        List<Item> items = itemStorage.findByUserIdOrderById(ownerId);
         List<Booking> bookings = bookingStorage.findByItemIn(items);
         List<Comment> comments = commentStorage.findByItemIdIn(items.stream()
                 .map(Item::getId)

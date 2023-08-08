@@ -35,8 +35,8 @@ public class ItemController {
 
     @PatchMapping("/{itemId}")
     public ResponseEntity<Object> patch(@RequestHeader(HEADER_USER_ID) long userId,
-                            @RequestBody ItemPatchDto itemPatchDto,
-                            @PathVariable long itemId) {
+                                        @RequestBody ItemPatchDto itemPatchDto,
+                                        @PathVariable long itemId) {
         return client.patchItem(userId, itemId, itemPatchDto);
     }
 
@@ -47,8 +47,8 @@ public class ItemController {
 
     @PostMapping("/{itemId}/comment")
     public ResponseEntity<Object> addComment(@RequestHeader(HEADER_USER_ID) long userId,
-                                    @RequestBody @Valid CommentPostDto commentPostDto,
-                                    @PathVariable long itemId) {
+                                             @RequestBody @Valid CommentPostDto commentPostDto,
+                                             @PathVariable long itemId) {
         return client.postComment(commentPostDto, userId, itemId);
     }
 }

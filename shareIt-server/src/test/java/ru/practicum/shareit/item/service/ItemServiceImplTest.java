@@ -126,7 +126,7 @@ class ItemServiceImplTest {
         Item item1 = prepareItem();
         Item item2 = prepareItem();
         item2.setId(2L);
-        when(itemStorage.findByUserId(1L)).thenReturn(List.of(item1, item2));
+        when(itemStorage.findByUserIdOrderById(1L)).thenReturn(List.of(item1, item2));
         when(bookingStorage.findByItemIn(anyList())).thenReturn(Collections.EMPTY_LIST);
         when(commentStorage.findByItemIdIn(anyList())).thenReturn(Collections.EMPTY_LIST);
 
@@ -160,7 +160,7 @@ class ItemServiceImplTest {
     void getItemsByOwnerId2() {
         List<Item> itemList = List.of(item);
         List<ItemGetDtoFull> required = List.of(itemGetDtoFull);
-        when(itemStorage.findByUserId(anyLong())).thenReturn(itemList);
+        when(itemStorage.findByUserIdOrderById(anyLong())).thenReturn(itemList);
         when(bookingStorage.findByItemIn(anyList())).thenReturn(Collections.EMPTY_LIST);
         when(commentStorage.findByItemIdIn(anyList())).thenReturn(Collections.EMPTY_LIST);
 

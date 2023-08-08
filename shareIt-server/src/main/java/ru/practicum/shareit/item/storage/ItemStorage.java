@@ -7,7 +7,7 @@ import ru.practicum.shareit.item.entity.Item;
 import java.util.List;
 
 public interface ItemStorage extends JpaRepository<Item, Long> {
-    List<Item> findByUserId(long ownerId);
+    List<Item> findByUserIdOrderById(long ownerId);
 
     @Query("select it " +
             "from Item as it " +

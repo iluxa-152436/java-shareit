@@ -8,7 +8,6 @@ import ru.practicum.shareit.request.client.ItemRequestClient;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 
 import javax.validation.Valid;
-import java.util.Optional;
 
 import static ru.practicum.shareit.constant.Constant.HEADER_USER_ID;
 
@@ -27,7 +26,7 @@ public class ItemRequestController {
 
     @GetMapping("/{requestId}")
     public ResponseEntity<Object> getItemRequestById(@RequestHeader(HEADER_USER_ID) long requesterId,
-                                                @PathVariable long requestId) {
+                                                     @PathVariable long requestId) {
         return client.getItemRequestById(requestId, requesterId);
     }
 
@@ -38,8 +37,8 @@ public class ItemRequestController {
 
     @GetMapping("/all")
     public ResponseEntity<Object> getAllItemRequestsOtherUsers(@RequestHeader(HEADER_USER_ID) long requesterId,
-                                                                @RequestParam Optional<Integer> from,
-                                                                @RequestParam Optional<Integer> size) {
+                                                               @RequestParam(defaultValue = "0") Integer from,
+                                                               @RequestParam(defaultValue = "10") Integer size) {
         return client.getItemRequestsOtherUsers(requesterId, from, size);
     }
 }

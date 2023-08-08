@@ -25,6 +25,7 @@ public class Booking {
     @JoinColumn(name = "user_id")
     @ToString.Exclude
     private User booker;
+    @Enumerated(EnumType.STRING)
     @Column(name = "state", nullable = false, length = 10)
     private BookingState state;
     @Column(name = "start_date", nullable = false)
