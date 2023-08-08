@@ -1,6 +1,7 @@
 package ru.practicum.shareit.item.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.client.ItemClient;
@@ -46,7 +47,7 @@ public class ItemController {
     @GetMapping("/search")
     public ResponseEntity<Object> search(@RequestParam("text") String text) {
         if (StringUtils.isBlank(text)) {
-            return (ResponseEntity<Object>) Collections.EMPTY_LIST;
+            return new ResponseEntity<>(Collections.EMPTY_LIST, HttpStatus.OK);
         }
         return client.getAvailableItemsByFilter(text);
     }
