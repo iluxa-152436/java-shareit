@@ -9,7 +9,6 @@ import ru.practicum.shareit.request.service.ItemRequestService;
 
 import static ru.practicum.shareit.constant.Constant.HEADER_USER_ID;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,7 +20,7 @@ public class ItemRequestController {
     private final ItemRequestService itemRequestService;
 
     @PostMapping
-    public ItemRequestGetDto add(@RequestBody @Valid ItemRequestDto itemRequestDto,
+    public ItemRequestGetDto add(@RequestBody ItemRequestDto itemRequestDto,
                                  @RequestHeader(HEADER_USER_ID) long requesterId) {
         return itemRequestService.addNewItemRequest(itemRequestDto, requesterId);
     }

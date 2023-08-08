@@ -7,8 +7,11 @@ import ru.practicum.shareit.item.client.ItemClient;
 import ru.practicum.shareit.item.dto.CommentPostDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemPatchDto;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.Valid;
+
+import java.util.Collections;
 
 import static ru.practicum.shareit.constant.Constant.HEADER_USER_ID;
 
@@ -35,13 +38,16 @@ public class ItemController {
 
     @PatchMapping("/{itemId}")
     public ResponseEntity<Object> patch(@RequestHeader(HEADER_USER_ID) long userId,
-                                        @RequestBody ItemPatchDto itemPatchDto,
+                                        @RequestBody @Valid ItemPatchDto itemPatchDto,
                                         @PathVariable long itemId) {
         return client.patchItem(userId, itemId, itemPatchDto);
     }
 
     @GetMapping("/search")
     public ResponseEntity<Object> search(@RequestParam("text") String text) {
+        if (StringUtils.isBlank(text)) {
+            return (ResponseEntity<Object>) Collections.EMPTY_LIST;
+        }
         return client.getAvailableItemsByFilter(text);
     }
 

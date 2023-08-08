@@ -2,6 +2,7 @@ package ru.practicum.shareit.exception.controller;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -24,5 +25,12 @@ public class ExceptionHandlerController {
         log.debug("Получен статус 400 Bad request [{}]", exception.getMessage(), exception);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ApiErrorMessage(exception.getFieldError().getDefaultMessage()));
+    }
+
+    @ExceptionHandler(value = {ConversionFailedException.class})
+    public ResponseEntity<ApiErrorMessage> handleConversionFailException(Exception exception) {
+        log.debug("Получен статус 400 Bad request [{}]", exception.getClass(), exception);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ApiErrorMessage("Unknown state: UNSUPPORTED_STATUS"));
     }
 }

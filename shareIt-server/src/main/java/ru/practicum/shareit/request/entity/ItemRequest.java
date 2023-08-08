@@ -1,7 +1,6 @@
 package ru.practicum.shareit.request.entity;
 
 import lombok.*;
-import org.apache.commons.lang3.builder.ToStringExclude;
 import ru.practicum.shareit.user.entity.User;
 
 import javax.persistence.*;
@@ -22,7 +21,6 @@ public class ItemRequest {
     private String description;
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @ToStringExclude
     private User requester;
     @Column(name = "created")
     private LocalDateTime created;

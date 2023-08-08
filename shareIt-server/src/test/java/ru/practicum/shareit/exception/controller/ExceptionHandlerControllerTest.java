@@ -14,7 +14,7 @@ import ru.practicum.shareit.item.controller.ItemController;
 import ru.practicum.shareit.item.dto.ItemPatchDto;
 import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.user.controller.UserController;
-import ru.practicum.shareit.user.entity.User;
+import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.exception.ConflictException;
 import ru.practicum.shareit.user.exception.UserNotFoundException;
 import ru.practicum.shareit.user.service.UserService;
@@ -44,7 +44,7 @@ class ExceptionHandlerControllerTest {
 
     @Test
     void handleExceptionTest() throws Exception {
-        when(userService.addNewUser(any(User.class))).thenThrow(IllegalArgumentException.class);
+        when(userService.addNewUser(any(UserDto.class))).thenThrow(IllegalArgumentException.class);
 
         mvc.perform(post("/users")
                         .content(mapper.writeValueAsString(prepareUser(1L)))
@@ -56,7 +56,7 @@ class ExceptionHandlerControllerTest {
 
     @Test
     void handleConflictExceptionTest() throws Exception {
-        when(userService.addNewUser(any(User.class))).thenThrow(ConflictException.class);
+        when(userService.addNewUser(any(UserDto.class))).thenThrow(ConflictException.class);
 
         mvc.perform(post("/users")
                         .content(mapper.writeValueAsString(prepareUser(1L)))

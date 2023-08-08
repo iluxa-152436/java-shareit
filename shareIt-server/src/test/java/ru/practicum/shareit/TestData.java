@@ -32,7 +32,7 @@ public class TestData {
     }
 
     public static UserDto prepareUserDto(long id) {
-        return new UserDto("name", "email@email.ru");
+        return new UserDto("name", "email" + id + "@email.ru");
     }
 
     public static Item prepareItem() {

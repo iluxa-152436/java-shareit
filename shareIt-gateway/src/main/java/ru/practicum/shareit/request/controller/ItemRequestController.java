@@ -8,6 +8,9 @@ import ru.practicum.shareit.request.client.ItemRequestClient;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.PositiveOrZero;
 
 import static ru.practicum.shareit.constant.Constant.HEADER_USER_ID;
 
@@ -37,8 +40,8 @@ public class ItemRequestController {
 
     @GetMapping("/all")
     public ResponseEntity<Object> getAllItemRequestsOtherUsers(@RequestHeader(HEADER_USER_ID) long requesterId,
-                                                               @RequestParam(defaultValue = "0") Integer from,
-                                                               @RequestParam(defaultValue = "10") Integer size) {
+                                                               @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
+                                                               @RequestParam(defaultValue = "10") @Min(1) @Max(20) Integer size) {
         return client.getItemRequestsOtherUsers(requesterId, from, size);
     }
 }

@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import ru.practicum.shareit.TestData;
+import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.dto.UserPatchDto;
 import ru.practicum.shareit.user.entity.User;
 import ru.practicum.shareit.user.exception.UserNotFoundException;
@@ -34,9 +36,10 @@ class UserServiceImplTest {
                 .email("email@email.ru")
                 .name("name")
                 .build();
+        final UserDto userDto = TestData.prepareUserDto(1L);
         when(storage.save(any(User.class))).thenReturn(userToSave);
 
-        final User savedUser = service.addNewUser(new User());
+        final User savedUser = service.addNewUser(userDto);
 
         assertEquals(userToSave, savedUser);
         verify(storage, times(1)).save(any(User.class));
@@ -73,7 +76,7 @@ class UserServiceImplTest {
 
     @Test
     void updateUserTest() {
-        Long updatedUserId = 1L;
+        long updatedUserId = 1L;
         String email = "updated_email@email.ru";
         String name = "updated name";
         User saved = User.builder().id(updatedUserId).email(email).name(name).build();

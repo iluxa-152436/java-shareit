@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.exception.UserNotFoundException;
 import ru.practicum.shareit.user.mapper.UserMapper;
 import ru.practicum.shareit.user.dto.UserPatchDto;
@@ -24,9 +25,9 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public User addNewUser(User user) {
-        log.debug("Получен user = {}", user);
-        return storage.save(user);
+    public User addNewUser(UserDto userDto) {
+        log.debug("Получен user = {}", userDto);
+        return storage.save(UserMapper.toEntity(userDto));
     }
 
     @Override
